@@ -1,25 +1,64 @@
-
+version: "3.3"
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+  db:
+    image: mariadb:10.4
+    container_name: dress_me
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - db-data:/var/lib/mysql
+      - ./docker/db:/var/db
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - dev
+    ports:
+      - "3309:3306"
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_dress_me
+    depends_on:
+      - db
+    ports:
+      - 81:80
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 100M
+    networks:
+      - dev
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev_docker_dress_me
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    ports:
+      - "82:80"
+      - "1025:25"
+    networks:
+      - dev
+
+  www:
+    build: ./docker/php
+    container_name: www_docker_dress_me
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/php/vhosts:/etc/apache2/sites-enabled
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./:/var/www
+      - ./tmp:/tmp
+    networks:
+      - dev
+  redis:
+    image: redis:6-alpine
+    networks:
+      - dev
+    sysctls:
+      - "net.core.somaxconn=511"
+    ports:
+      - 6379:6379
+
+networks:
+  dev:
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  db-data:
