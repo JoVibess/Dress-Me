@@ -81,6 +81,9 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
+        "phpstan": "phpstan analyse -c phpstan.neon.dist --no-progress --debug",
+        "cs-check": "php-cs-fixer fix --dry-run --diff --verbose --sequential",
+        "cs-fix": "php-cs-fixer fix --verbose --sequential",
         "post-install-cmd": [
             "@auto-scripts"
         ],
@@ -98,6 +101,9 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^13.0",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",

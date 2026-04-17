@@ -1,0 +1,27 @@
+{% extends 'front/base.html.twig' %}
+
+{% block page_title %}Sign up{% endblock %}
+
+{% block front_body %}
+    <section class="auth-card">
+        <h1>Create an account</h1>
+
+        {% if error %}
+            <p class="form-error">{{ error }}</p>
+        {% endif %}
+
+        {{ form_start(registration_form) }}
+            {{ form_row(registration_form.name) }}
+            {{ form_row(registration_form.email) }}
+            {{ form_row(registration_form.website) }}
+            {{ form_row(registration_form.plainPassword) }}
+            {{ form_row(registration_form.agreeTerms) }}
+            <button type="submit">Create account</button>
+        {{ form_end(registration_form) }}
+
+        <p>
+            Already registered?
+            <a href="{{ path('app_login') }}">Log in</a>
+        </p>
+    </section>
+{% endblock %}

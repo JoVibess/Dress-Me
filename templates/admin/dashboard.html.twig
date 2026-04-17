@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin dashboard{% endblock %}
+
+{% block body %}
+    <h1>Admin dashboard</h1>
+    <p>You are logged in as an administrator.</p>
+
+    <form method="post" action="{{ path('app_logout') }}">
+        <button type="submit">Log out</button>
+    </form>
+{% endblock %}

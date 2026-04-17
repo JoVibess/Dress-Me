@@ -3,24 +3,30 @@
 namespace App\Entity;
 
 use App\Enum\UserRole;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use App\Traits\CreatedAtUpdatedAtEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'users')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_USER_WEBSITE', fields: ['website'])]
 #[ORM\HasLifecycleCallbacks]
-class Utilisateur
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedAtUpdatedAtEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nom = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
@@ -29,7 +35,7 @@ class Utilisateur
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    private ?string $site = null;
+    private ?string $website = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
@@ -38,14 +44,14 @@ class Utilisateur
     private ?\DateTimeImmutable $createdAt = null;
 
     /**
-     * @var Collection<int, Abonnement>
+     * @var Collection<int, Subscription>
      */
-    #[ORM\OneToMany(targetEntity: Abonnement::class, mappedBy: 'utilisateur')]
-    private Collection $abonnements;
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
+    private Collection $subscriptions;
 
     public function __construct()
     {
-        $this->abonnements = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,14 +59,14 @@ class Utilisateur
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): static
+    public function setName(string $name): static
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -75,6 +81,11 @@ class Utilisateur
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 
     public function getRoles(): array
@@ -102,14 +113,14 @@ class Utilisateur
         return $this;
     }
 
-    public function getSite(): ?string
+    public function getWebsite(): ?string
     {
-        return $this->site;
+        return $this->website;
     }
 
-    public function setSite(string $site): static
+    public function setWebsite(string $website): static
     {
-        $this->site = $site;
+        $this->website = $website;
 
         return $this;
     }
@@ -126,30 +137,34 @@ class Utilisateur
         return $this;
     }
 
-    /**
-     * @return Collection<int, Abonnement>
-     */
-    public function getAbonnements(): Collection
+    public function eraseCredentials(): void
     {
-        return $this->abonnements;
     }
 
-    public function addAbonnement(Abonnement $abonnement): static
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getSubscriptions(): Collection
     {
-        if (!$this->abonnements->contains($abonnement)) {
-            $this->abonnements->add($abonnement);
-            $abonnement->setUtilisateur($this);
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Subscription $subscription): static
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeAbonnement(Abonnement $abonnement): static
+    public function removeSubscription(Subscription $subscription): static
     {
-        if ($this->abonnements->removeElement($abonnement)) {
+        if ($this->subscriptions->removeElement($subscription)) {
             // set the owning side to null (unless already changed)
-            if ($abonnement->getUtilisateur() === $this) {
-                $abonnement->setUtilisateur(null);
+            if ($subscription->getUser() === $this) {
+                $subscription->setUser(null);
             }
         }
 

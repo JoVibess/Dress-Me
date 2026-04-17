@@ -1,0 +1,56 @@
+{% extends 'front/base.html.twig' %}
+
+{% block page_title %}Offers{% endblock %}
+
+{% block front_body %}
+    <section class="offers-hero">
+        <p class="eyebrow">DressMe pricing</p>
+        <h1>Choose the credit plan that fits your store.</h1>
+        <p>
+            Subscriptions are made for recurring virtual try-on usage.
+            One-time packs are useful when you need extra credits for a campaign or a product launch.
+        </p>
+    </section>
+
+    <section class="offers-section">
+        <h2>Subscriptions</h2>
+
+        <div class="offers-grid">
+            {% for offer in subscription_offers %}
+                <article class="offer-card">
+                    <h3>{{ offer.name }}</h3>
+                    <p>{{ offer.description }}</p>
+                    <p class="offer-price">{{ offer.price|number_format(2, '.', ' ') }} €</p>
+                    <p>{{ offer.creditAmount }} credits / {{ offer.durationInMonths }} month</p>
+                    <a href="{{ path('app_signup') }}">Start with this plan</a>
+                </article>
+            {% else %}
+                <p>No subscription offer is available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="offers-section">
+        <h2>One-time credit packs</h2>
+
+        <div class="offers-grid">
+            {% for offer in one_time_offers %}
+                <article class="offer-card">
+                    <h3>{{ offer.name }}</h3>
+                    <p>{{ offer.description }}</p>
+                    <p class="offer-price">
+                        {% if offer.price == '0.00' %}
+                            Free
+                        {% else %}
+                            {{ offer.price|number_format(2, '.', ' ') }} €
+                        {% endif %}
+                    </p>
+                    <p>{{ offer.creditAmount }} credits</p>
+                    <a href="{{ path('app_signup') }}">Get this pack</a>
+                </article>
+            {% else %}
+                <p>No one-time credit pack is available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

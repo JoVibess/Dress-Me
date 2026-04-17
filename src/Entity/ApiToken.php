@@ -2,29 +2,29 @@
 
 namespace App\Entity;
 
-use App\Repository\TokenRepository;
+use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TokenRepository::class)]
-class Token
+#[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
+class ApiToken
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tokens')]
+    #[ORM\ManyToOne(inversedBy: 'apiTokens')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Abonnement $abonnement = null;
+    private ?Subscription $subscription = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    private ?string $valeurToken = null;
+    private ?string $tokenValue = null;
 
     #[ORM\Column]
     private ?bool $isActive = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $dateActivation = null;
+    private ?\DateTimeImmutable $activatedAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -40,38 +40,38 @@ class Token
         return $this->id;
     }
 
-    public function getAbonnement(): ?Abonnement
+    public function getSubscription(): ?Subscription
     {
-        return $this->abonnement;
+        return $this->subscription;
     }
 
-    public function setAbonnement(?Abonnement $abonnement): static
+    public function setSubscription(?Subscription $subscription): static
     {
-        $this->abonnement = $abonnement;
+        $this->subscription = $subscription;
 
         return $this;
     }
 
-    public function getValeurToken(): ?string
+    public function getTokenValue(): ?string
     {
-        return $this->valeurToken;
+        return $this->tokenValue;
     }
 
-    public function setValeurToken(string $valeurToken): static
+    public function setTokenValue(string $tokenValue): static
     {
-        $this->valeurToken = $valeurToken;
+        $this->tokenValue = $tokenValue;
 
         return $this;
     }
 
-    public function getDateActivation(): ?\DateTimeImmutable
+    public function getActivatedAt(): ?\DateTimeImmutable
     {
-        return $this->dateActivation;
+        return $this->activatedAt;
     }
 
-    public function setDateActivation(?\DateTimeImmutable $dateActivation): static
+    public function setActivatedAt(?\DateTimeImmutable $activatedAt): static
     {
-        $this->dateActivation = $dateActivation;
+        $this->activatedAt = $activatedAt;
 
         return $this;
     }

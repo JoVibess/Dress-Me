@@ -1,0 +1,18 @@
+{% extends 'front/base.html.twig' %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block front_body %}
+    <section class="home-hero">
+        <h1>DressMe</h1>
+        <p>Virtual try-on for WooCommerce stores.</p>
+
+        {% if app.user %}
+            <form method="post" action="{{ path('app_logout') }}">
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <a href="{{ path('app_login') }}">Login</a>
+        {% endif %}
+    </section>
+{% endblock %}
