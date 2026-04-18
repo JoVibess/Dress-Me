@@ -2,29 +2,43 @@
 
 {% block page_title %}Login{% endblock %}
 
+{% block front_header %}{% endblock %}
+
 {% block front_body %}
-    <section class="auth-card">
-        <h1>Log in</h1>
+    <section class="auth-shell">
+        <div class="auth-card">
+            <a class="auth-card__brand" href="{{ path('front_home') }}">DressMe</a>
 
-        {% if error %}
-            <p class="form-error">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
-        {% endif %}
+            <div class="auth-card__header">
+                <p class="eyebrow">Welcome back</p>
+                <h1>Log in</h1>
+                <p>Access your dashboard, credits and DressMe plugin settings.</p>
+            </div>
 
-        <form method="post" action="{{ path('app_login') }}">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            {% if error %}
+                <p class="form-error">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+            {% endif %}
 
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" value="{{ last_username }}" autocomplete="email" required autofocus>
+            <form class="auth-form" method="post" action="{{ path('app_login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <label for="password">Password</label>
-            <input id="password" type="password" name="password" autocomplete="current-password" required>
+                <div>
+                    <label class="auth-form__label" for="email">Email</label>
+                    <input class="form-control auth-form__control" id="email" type="email" name="email" value="{{ last_username }}" autocomplete="email" required autofocus>
+                </div>
 
-            <button type="submit">Log in</button>
-        </form>
+                <div>
+                    <label class="auth-form__label" for="password">Password</label>
+                    <input class="form-control auth-form__control" id="password" type="password" name="password" autocomplete="current-password" required>
+                </div>
 
-        <p>
-            No account yet?
-            <a href="{{ path('app_signup') }}">Create one</a>
-        </p>
+                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">Log in</button>
+            </form>
+
+            <p class="auth-card__footer">
+                No account yet?
+                <a href="{{ path('app_signup') }}">Create one</a>
+            </p>
+        </div>
     </section>
 {% endblock %}

@@ -2,7 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ApiToken;
+use App\Entity\CreditBatch;
 use App\Entity\Offer;
+use App\Entity\Subscription;
 use App\Entity\User;
 use App\Enum\CreditSourceType;
 use App\Enum\UserRole;
@@ -56,6 +59,8 @@ final class AppFixtures extends Fixture
             ],
         ];
 
+        $createdUsers = [];
+
         foreach ($users as $userData) {
             $user = (new User())
                 ->setName($userData['name'])
@@ -66,6 +71,7 @@ final class AppFixtures extends Fixture
             $user->setPassword($this->passwordHasher->hashPassword($user, $userData['plainPassword']));
 
             $manager->persist($user);
+            $createdUsers[$userData['email']] = $user;
         }
 
         $offers = [
@@ -92,6 +98,30 @@ final class AppFixtures extends Fixture
                 'type' => CreditSourceType::SUBSCRIPTION,
                 'creditAmount' => 900,
                 'durationInMonths' => 1,
+            ],
+            [
+                'name' => 'Starter Annual',
+                'description' => 'Annual subscription for small WooCommerce stores with two months included.',
+                'price' => '190.00',
+                'type' => CreditSourceType::SUBSCRIPTION,
+                'creditAmount' => 1200,
+                'durationInMonths' => 12,
+            ],
+            [
+                'name' => 'Growth Annual',
+                'description' => 'Annual subscription for growing stores with predictable virtual try-on usage.',
+                'price' => '490.00',
+                'type' => CreditSourceType::SUBSCRIPTION,
+                'creditAmount' => 4200,
+                'durationInMonths' => 12,
+            ],
+            [
+                'name' => 'Scale Annual',
+                'description' => 'Annual subscription for high-volume catalogs and advanced ecommerce teams.',
+                'price' => '990.00',
+                'type' => CreditSourceType::SUBSCRIPTION,
+                'creditAmount' => 10800,
+                'durationInMonths' => 12,
             ],
             [
                 'name' => 'Free Trial Pack',
@@ -135,6 +165,8 @@ final class AppFixtures extends Fixture
             ],
         ];
 
+        $createdOffers = [];
+
         foreach ($offers as $offerData) {
             $offer = (new Offer())
                 ->setName($offerData['name'])
@@ -145,6 +177,90 @@ final class AppFixtures extends Fixture
                 ->setDurationInMonths($offerData['durationInMonths']);
 
             $manager->persist($offer);
+            $createdOffers[$offerData['name']] = $offer;
+        }
+
+        $subscriptions = [
+            [
+                'userEmail' => 'alice@example.test',
+                'offerName' => 'Starter Monthly',
+                'status' => Subscription::STATUS_ACTIVE,
+                'startsAt' => '-10 days',
+                'endsAt' => '+20 days',
+                'tokenValue' => 'dm_test_alice_starter_001',
+                'tokenActive' => true,
+                'creditBatches' => [
+                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 100, 'remainingAmount' => 72, 'expiresAt' => '+20 days'],
+                    ['type' => CreditSourceType::ONE_TIME_PURCHASE, 'initialAmount' => 40, 'remainingAmount' => 18, 'expiresAt' => null],
+                ],
+            ],
+            [
+                'userEmail' => 'ben@example.test',
+                'offerName' => 'Growth Monthly',
+                'status' => Subscription::STATUS_ACTIVE,
+                'startsAt' => '-5 days',
+                'endsAt' => '+25 days',
+                'tokenValue' => 'dm_test_ben_growth_001',
+                'tokenActive' => true,
+                'creditBatches' => [
+                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 350, 'remainingAmount' => 301, 'expiresAt' => '+25 days'],
+                ],
+            ],
+            [
+                'userEmail' => 'chloe@example.test',
+                'offerName' => 'Scale Monthly',
+                'status' => Subscription::STATUS_ACTIVE,
+                'startsAt' => '-20 days',
+                'endsAt' => '+10 days',
+                'tokenValue' => 'dm_test_chloe_scale_001',
+                'tokenActive' => true,
+                'creditBatches' => [
+                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 900, 'remainingAmount' => 522, 'expiresAt' => '+10 days'],
+                    ['type' => CreditSourceType::ONE_TIME_PURCHASE, 'initialAmount' => 125, 'remainingAmount' => 125, 'expiresAt' => null],
+                ],
+            ],
+            [
+                'userEmail' => 'david@example.test',
+                'offerName' => 'Starter Monthly',
+                'status' => Subscription::STATUS_CANCELLED,
+                'startsAt' => '-70 days',
+                'endsAt' => '-40 days',
+                'tokenValue' => 'dm_test_david_cancelled_001',
+                'tokenActive' => false,
+                'creditBatches' => [
+                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 100, 'remainingAmount' => 0, 'expiresAt' => '-40 days'],
+                ],
+            ],
+        ];
+
+        foreach ($subscriptions as $subscriptionData) {
+            $subscription = (new Subscription())
+                ->setUser($createdUsers[$subscriptionData['userEmail']])
+                ->setOffer($createdOffers[$subscriptionData['offerName']])
+                ->setStatus($subscriptionData['status'])
+                ->setStartsAt(new \DateTimeImmutable($subscriptionData['startsAt']))
+                ->setEndsAt(new \DateTimeImmutable($subscriptionData['endsAt']));
+
+            $manager->persist($subscription);
+
+            $apiToken = (new ApiToken())
+                ->setSubscription($subscription)
+                ->setTokenValue($subscriptionData['tokenValue'])
+                ->setIsActive($subscriptionData['tokenActive'])
+                ->setActivatedAt($subscriptionData['tokenActive'] ? new \DateTimeImmutable($subscriptionData['startsAt']) : null);
+
+            $manager->persist($apiToken);
+
+            foreach ($subscriptionData['creditBatches'] as $creditBatchData) {
+                $creditBatch = (new CreditBatch())
+                    ->setSubscription($subscription)
+                    ->setType($creditBatchData['type'])
+                    ->setInitialAmount($creditBatchData['initialAmount'])
+                    ->setRemainingAmount($creditBatchData['remainingAmount'])
+                    ->setExpiresAt(null === $creditBatchData['expiresAt'] ? null : new \DateTimeImmutable($creditBatchData['expiresAt']));
+
+                $manager->persist($creditBatch);
+            }
         }
 
         $manager->flush();

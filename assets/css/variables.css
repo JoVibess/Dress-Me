@@ -1,3 +1,11 @@
+:root {
+    --dressme-bg: #f8f5ef;
+    --dressme-ink: #16130f;
+    --dressme-muted: #413b33;
+}
+
 body {
-    background-color: skyblue;
+    margin: 0;
+    background: var(--dressme-bg);
+    color: var(--dressme-ink);
 }

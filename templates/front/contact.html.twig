@@ -1,0 +1,106 @@
+{% extends 'front/base.html.twig' %}
+
+{% block page_title %}Contact{% endblock %}
+
+{% block front_body %}
+    <section class="contact-hero text-center mx-auto">
+        <p class="eyebrow">Contact DressMe</p>
+        <h1>Tell us what you need.</h1>
+        <p>
+            Choose the right form so your message lands in the right place.
+            Support questions and business opportunities do not need the same context.
+        </p>
+    </section>
+
+    <section class="contact-panel mx-auto">
+        {% for message in app.flashes('success') %}
+            <p class="form-success">{{ message }}</p>
+        {% endfor %}
+
+        <div class="contact-panel__header">
+            <div>
+                <p class="offers-section__kicker mb-1">Message type</p>
+                <h2 class="mb-0">How can we help?</h2>
+            </div>
+
+            <div class="billing-switch" data-contact-switcher role="group" aria-label="Contact form type">
+                <button class="billing-switch__button {{ active_contact_form == 'support' ? 'is-active' }}" type="button" data-contact-form-target="support" aria-pressed="{{ active_contact_form == 'support' ? 'true' : 'false' }}">
+                    Customer support
+                </button>
+                <button class="billing-switch__button {{ active_contact_form == 'partnership' ? 'is-active' }}" type="button" data-contact-form-target="partnership" aria-pressed="{{ active_contact_form == 'partnership' ? 'true' : 'false' }}">
+                    Business partnership
+                </button>
+            </div>
+        </div>
+
+        {{ form_start(customer_support_form, { action: path('front_contact'), attr: { class: 'contact-form', 'data-contact-form': 'support', hidden: active_contact_form != 'support' } }) }}
+            {{ form_widget(customer_support_form.contactType) }}
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    {{ form_label(customer_support_form.name, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(customer_support_form.name, { attr: { class: 'form-control contact-form__control', autocomplete: 'name' } }) }}
+                    {{ form_errors(customer_support_form.name) }}
+                </div>
+
+                <div class="col-12 col-md-6">
+                    {{ form_label(customer_support_form.email, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(customer_support_form.email, { attr: { class: 'form-control contact-form__control', autocomplete: 'email' } }) }}
+                    {{ form_errors(customer_support_form.email) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form_label(customer_support_form.subject, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(customer_support_form.subject, { attr: { class: 'form-control contact-form__control' } }) }}
+                    {{ form_errors(customer_support_form.subject) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form_label(customer_support_form.message, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(customer_support_form.message, { attr: { class: 'form-control contact-form__control', rows: 6 } }) }}
+                    {{ form_errors(customer_support_form.message) }}
+                </div>
+            </div>
+
+            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">Send support request</button>
+        {{ form_end(customer_support_form) }}
+
+        {{ form_start(business_partnership_form, { action: path('front_contact'), attr: { class: 'contact-form', 'data-contact-form': 'partnership', hidden: active_contact_form != 'partnership' } }) }}
+            {{ form_widget(business_partnership_form.contactType) }}
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    {{ form_label(business_partnership_form.name, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(business_partnership_form.name, { attr: { class: 'form-control contact-form__control', autocomplete: 'name' } }) }}
+                    {{ form_errors(business_partnership_form.name) }}
+                </div>
+
+                <div class="col-12 col-md-6">
+                    {{ form_label(business_partnership_form.email, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(business_partnership_form.email, { attr: { class: 'form-control contact-form__control', autocomplete: 'email' } }) }}
+                    {{ form_errors(business_partnership_form.email) }}
+                </div>
+
+                <div class="col-12 col-md-6">
+                    {{ form_label(business_partnership_form.company, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(business_partnership_form.company, { attr: { class: 'form-control contact-form__control', autocomplete: 'organization' } }) }}
+                    {{ form_errors(business_partnership_form.company) }}
+                </div>
+
+                <div class="col-12 col-md-6">
+                    {{ form_label(business_partnership_form.website, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(business_partnership_form.website, { attr: { class: 'form-control contact-form__control', autocomplete: 'url' } }) }}
+                    {{ form_errors(business_partnership_form.website) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form_label(business_partnership_form.message, null, { label_attr: { class: 'contact-form__label' } }) }}
+                    {{ form_widget(business_partnership_form.message, { attr: { class: 'form-control contact-form__control', rows: 6 } }) }}
+                    {{ form_errors(business_partnership_form.message) }}
+                </div>
+            </div>
+
+            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">Send partnership request</button>
+        {{ form_end(business_partnership_form) }}
+    </section>
+{% endblock %}

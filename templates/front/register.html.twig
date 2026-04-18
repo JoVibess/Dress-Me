@@ -2,26 +2,65 @@
 
 {% block page_title %}Sign up{% endblock %}
 
+{% block front_header %}{% endblock %}
+
 {% block front_body %}
-    <section class="auth-card">
-        <h1>Create an account</h1>
+    <section class="auth-shell">
+        <div class="auth-card auth-card--wide">
+            <a class="auth-card__brand" href="{{ path('front_home') }}">DressMe</a>
 
-        {% if error %}
-            <p class="form-error">{{ error }}</p>
-        {% endif %}
+            <div class="auth-card__header">
+                <p class="eyebrow">Start building</p>
+                <h1>Create an account</h1>
+                <p>Create your DressMe workspace and connect your WooCommerce store later.</p>
+            </div>
 
-        {{ form_start(registration_form) }}
-            {{ form_row(registration_form.name) }}
-            {{ form_row(registration_form.email) }}
-            {{ form_row(registration_form.website) }}
-            {{ form_row(registration_form.plainPassword) }}
-            {{ form_row(registration_form.agreeTerms) }}
-            <button type="submit">Create account</button>
-        {{ form_end(registration_form) }}
+            {% if error %}
+                <p class="form-error">{{ error }}</p>
+            {% endif %}
 
-        <p>
-            Already registered?
-            <a href="{{ path('app_login') }}">Log in</a>
-        </p>
+            {{ form_start(registration_form, { attr: { class: 'auth-form' } }) }}
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        {{ form_label(registration_form.name, null, { label_attr: { class: 'auth-form__label' } }) }}
+                        {{ form_widget(registration_form.name, { attr: { class: 'form-control auth-form__control' } }) }}
+                        {{ form_errors(registration_form.name) }}
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        {{ form_label(registration_form.email, null, { label_attr: { class: 'auth-form__label' } }) }}
+                        {{ form_widget(registration_form.email, { attr: { class: 'form-control auth-form__control' } }) }}
+                        {{ form_errors(registration_form.email) }}
+                    </div>
+
+                    <div class="col-12">
+                        {{ form_label(registration_form.website, null, { label_attr: { class: 'auth-form__label' } }) }}
+                        {{ form_widget(registration_form.website, { attr: { class: 'form-control auth-form__control' } }) }}
+                        {{ form_errors(registration_form.website) }}
+                    </div>
+
+                    <div class="col-12">
+                        {{ form_label(registration_form.plainPassword, null, { label_attr: { class: 'auth-form__label' } }) }}
+                        {{ form_widget(registration_form.plainPassword, { attr: { class: 'form-control auth-form__control' } }) }}
+                        {{ form_errors(registration_form.plainPassword) }}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="auth-form__checkbox">
+                            {{ form_widget(registration_form.agreeTerms, { attr: { class: 'form-check-input' } }) }}
+                            <span>{{ registration_form.agreeTerms.vars.label }}</span>
+                        </label>
+                        {{ form_errors(registration_form.agreeTerms) }}
+                    </div>
+                </div>
+
+                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">Create account</button>
+            {{ form_end(registration_form) }}
+
+            <p class="auth-card__footer">
+                Already registered?
+                <a href="{{ path('app_login') }}">Log in</a>
+            </p>
+        </div>
     </section>
 {% endblock %}

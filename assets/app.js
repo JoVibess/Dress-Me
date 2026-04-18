@@ -1,4 +1,6 @@
 import './stimulus_bootstrap.js';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -6,7 +8,12 @@ import './stimulus_bootstrap.js';
  * which should already be in your base.html.twig.
  */
 
-import './styles/css/variables.css';
-import './styles/css/fonts.css';
+import './css/variables.css';
+import './css/fonts.css';
+import './css/pages/front.css';
+import './js/cart-offcanvas.js';
+import './js/checkout-cart.js';
+import './js/subscription-switcher.js';
+import './js/contact-form-switcher.js';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

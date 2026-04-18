@@ -4,7 +4,72 @@
 
 {% block body %}
     <h1>User dashboard</h1>
-    <p>You are logged in as a user.</p>
+    <p>Welcome {{ current_user.name }}.</p>
+
+    <section>
+        <h2>Credits</h2>
+        <p>
+            Available credits:
+            <strong>{{ total_credits }}</strong>
+        </p>
+    </section>
+
+    <section>
+        <h2>API token</h2>
+
+        {% if api_tokens is empty %}
+            <p>No API token has been generated yet.</p>
+        {% else %}
+            <ul>
+                {% for token in api_tokens %}
+                    <li>
+                        <code>{{ token.tokenValue }}</code>
+                        -
+                        {% if token.active %}
+                            valid
+                        {% else %}
+                            inactive
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Latest purchases</h2>
+
+        {% if latest_credit_batches is empty %}
+            <p>No credit purchase has been recorded yet.</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Initial credits</th>
+                        <th>Remaining credits</th>
+                        <th>Expires at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for credit_batch in latest_credit_batches %}
+                        <tr>
+                            <td>{{ credit_batch.type.value|replace({'_': ' '})|title }}</td>
+                            <td>{{ credit_batch.initialAmount }}</td>
+                            <td>{{ credit_batch.remainingAmount }}</td>
+                            <td>
+                                {% if credit_batch.expiresAt %}
+                                    {{ credit_batch.expiresAt|date('Y-m-d') }}
+                                {% else %}
+                                    No expiration
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </section>
 
     <form method="post" action="{{ path('app_logout') }}">
         <button type="submit">Log out</button>

@@ -26,13 +26,12 @@ services:
     networks:
       - dev
 
-  maildev:
-    image: maildev/maildev
-    container_name: maildev_docker_dress_me
-    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit_docker_dress_me
     ports:
-      - "82:80"
-      - "1025:25"
+      - "8025:8025"
+      - "1025:1025"
     networks:
       - dev
 

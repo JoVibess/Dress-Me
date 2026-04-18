@@ -13,4 +13,10 @@ final class CartController extends AbstractController
     {
         return $this->render('front/cart.html.twig');
     }
+
+    #[Route('/checkout', name: 'front_checkout', methods: ['GET'])]
+    public function checkout(): Response
+    {
+        return $this->render('front/checkout.html.twig');
+    }
 }

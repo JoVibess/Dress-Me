@@ -3,7 +3,114 @@
 {% block title %}{% block page_title %}DressMe{% endblock %}{% endblock %}
 
 {% block body %}
-    <main class="page-shell">
+    {% set current_route = app.request.attributes.get('_route') %}
+
+    {% block front_header %}
+    <header class="front-header navbar navbar-expand-lg navbar-light">
+        <div class="container front-header__inner">
+            <a class="navbar-brand front-header__logo" href="{{ path('front_home') }}">DressMe</a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#frontNavbar"
+                aria-controls="frontNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <nav id="frontNavbar" class="collapse navbar-collapse front-header__collapse" aria-label="Main navigation">
+                <div class="navbar-nav front-header__nav mx-lg-auto align-items-lg-center">
+                    <a class="nav-link px-lg-2 {{ current_route == 'front_offers' ? 'is-active' }}" href="{{ path('front_offers') }}" {{ current_route == 'front_offers' ? 'aria-current="page"' }}>
+                        Offers
+                    </a>
+                    <a class="nav-link px-lg-2 {{ current_route == 'front_features' ? 'is-active' }}" href="{{ path('front_features') }}" {{ current_route == 'front_features' ? 'aria-current="page"' }}>
+                        Features
+                    </a>
+                    <a class="nav-link px-lg-2 {{ current_route == 'front_contact' ? 'is-active' }}" href="{{ path('front_contact') }}" {{ current_route == 'front_contact' ? 'aria-current="page"' }}>
+                        Contact
+                    </a>
+                </div>
+
+                <div class="front-header__actions ms-lg-auto">
+                    <button
+                        class="front-header__cart"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#cartOffcanvas"
+                        aria-controls="cartOffcanvas"
+                        aria-label="Open cart"
+                    >
+                        <img src="{{ asset('images/cart.svg') }}" alt="" width="20" height="21">
+                        <span class="front-header__cart-count" data-cart-count>0</span>
+                    </button>
+
+                    {% if app.user %}
+                        <a class="front-header__icon-link" href="{{ path('middle_dashboard') }}" aria-label="Open dashboard">
+                            <img src="{{ asset('images/user.svg') }}" alt="" width="20" height="20">
+                        </a>
+
+                        <form class="m-0" method="post" action="{{ path('app_logout') }}">
+                            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" type="submit">Logout</button>
+                        </form>
+                    {% else %}
+                        <a class="btn btn-dark btn-sm rounded-pill px-3" href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+    {% endblock %}
+
+    <main class="page-shell container">
         {% block front_body %}{% endblock %}
     </main>
+
+    <aside
+        class="offcanvas offcanvas-end cart-offcanvas"
+        tabindex="-1"
+        id="cartOffcanvas"
+        aria-labelledby="cartOffcanvasLabel"
+    >
+        <div class="offcanvas-header cart-offcanvas__header">
+            <div>
+                <p class="eyebrow mb-1">Selected offers</p>
+                <h2 class="offcanvas-title" id="cartOffcanvasLabel">Your cart</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body cart-offcanvas__body">
+            <p class="cart-offcanvas__empty" data-cart-empty>Your cart is empty. Pick an offer to get started.</p>
+
+            <div class="cart-offcanvas__list" data-cart-list></div>
+
+            <template data-cart-item-template>
+                <article class="cart-offcanvas__item" data-cart-item>
+                    <div>
+                        <h3 data-cart-item-name></h3>
+                        <p data-cart-item-meta></p>
+                        <button type="button" data-cart-remove>Remove</button>
+                    </div>
+                    <div class="cart-offcanvas__item-price">
+                        <strong data-cart-item-price></strong>
+                        <span data-cart-item-quantity></span>
+                    </div>
+                </article>
+            </template>
+        </div>
+
+        <div class="cart-offcanvas__footer">
+            <div class="cart-offcanvas__total">
+                <span>Total</span>
+                <strong data-cart-total>0,00 €</strong>
+            </div>
+            <a class="btn btn-dark rounded-pill w-100" href="{{ path('front_checkout') }}" data-cart-checkout>
+                View cart and checkout
+            </a>
+        </div>
+    </aside>
 {% endblock %}

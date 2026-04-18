@@ -1,0 +1,41 @@
+<?php
+
+namespace App\MessageHandler;
+
+use App\Message\BusinessPartnershipContactMessage;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+#[AsMessageHandler]
+final readonly class BusinessPartnershipContactMessageHandler
+{
+    public function __construct(
+        private MailerInterface $mailer,
+        #[Autowire('%env(MAILER_FROM_EMAIL)%')]
+        private string $fromEmail,
+        #[Autowire('%env(CONTACT_TO_EMAIL)%')]
+        private string $contactToEmail,
+    ) {
+    }
+
+    public function __invoke(BusinessPartnershipContactMessage $message): void
+    {
+        $email = (new Email())
+            ->from($this->fromEmail)
+            ->to($this->contactToEmail)
+            ->replyTo($message->email)
+            ->subject(sprintf('[DressMe Partnership] %s', $message->company))
+            ->text(sprintf(
+                "New business partnership request\n\nName: %s\nEmail: %s\nCompany: %s\nWebsite: %s\n\nMessage:\n%s\n",
+                $message->name,
+                $message->email,
+                $message->company,
+                $message->website ?: 'Not provided',
+                $message->message,
+            ));
+
+        $this->mailer->send($email);
+    }
+}
