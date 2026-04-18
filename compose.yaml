@@ -38,6 +38,9 @@ services:
   www:
     build: ./docker/php
     container_name: www_docker_dress_me
+    depends_on:
+      - db
+      - mailpit
     ports:
       - "80:80"
     volumes:
@@ -47,6 +50,21 @@ services:
       - ./tmp:/tmp
     networks:
       - dev
+
+  messenger:
+    build: ./docker/php
+    container_name: messenger_docker_dress_me
+    depends_on:
+      - db
+      - mailpit
+    command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
+      - ./tmp:/tmp
+    networks:
+      - dev
+
   redis:
     image: redis:6-alpine
     networks:
