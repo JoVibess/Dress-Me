@@ -21,6 +21,18 @@ final class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $createdUsers = $this->loadUsers($manager);
+        $createdOffers = $this->loadOffers($manager);
+        $this->loadSubscriptions($manager, $createdUsers, $createdOffers);
+
+        $manager->flush();
+    }
+
+    /**
+     * @return array<string, User>
+     */
+    private function loadUsers(ObjectManager $manager): array
+    {
         $users = [
             [
                 'name' => 'Admin DressMe',
@@ -29,35 +41,38 @@ final class AppFixtures extends Fixture
                 'roles' => [UserRole::ADMIN],
                 'plainPassword' => 'admin123',
             ],
-            [
-                'name' => 'Alice Martin',
-                'email' => 'alice@example.test',
-                'website' => 'https://alice-shop.test',
-                'roles' => [UserRole::USER],
-                'plainPassword' => 'user123',
-            ],
-            [
-                'name' => 'Ben Carter',
-                'email' => 'ben@example.test',
-                'website' => 'https://ben-store.test',
-                'roles' => [UserRole::USER],
-                'plainPassword' => 'user123',
-            ],
-            [
-                'name' => 'Chloe Nguyen',
-                'email' => 'chloe@example.test',
-                'website' => 'https://chloe-fashion.test',
-                'roles' => [UserRole::USER],
-                'plainPassword' => 'user123',
-            ],
-            [
-                'name' => 'David Lopez',
-                'email' => 'david@example.test',
-                'website' => 'https://david-boutique.test',
-                'roles' => [UserRole::USER],
-                'plainPassword' => 'user123',
-            ],
         ];
+
+        $firstNames = [
+            'Alice', 'Ben', 'Chloe', 'David', 'Emma', 'Finn', 'Grace', 'Hugo', 'Iris', 'Jules',
+            'Kara', 'Leo', 'Maya', 'Noah', 'Olivia', 'Paul', 'Quinn', 'Romy', 'Sarah', 'Theo',
+            'Uma', 'Victor', 'Wendy', 'Xavier', 'Yara', 'Zack', 'Lina', 'Marco', 'Nina', 'Oscar',
+            'Pia', 'Robin', 'Sofia', 'Tom', 'Vera', 'Will', 'Zoey', 'Eli', 'Mila', 'Adam',
+            'Nora', 'Liam', 'Eva', 'Max', 'Clara', 'Nathan', 'Lola', 'Simon', 'Ava', 'Lucas',
+        ];
+        $lastNames = [
+            'Martin', 'Carter', 'Nguyen', 'Lopez', 'Dubois', 'Smith', 'Bernard', 'Wilson', 'Garcia', 'Roux',
+            'Petit', 'Taylor', 'Moreau', 'Brown', 'Laurent', 'Anderson', 'Leroy', 'Thomas', 'Girard', 'Moore',
+            'Lambert', 'Jackson', 'Fontaine', 'White', 'Mercier', 'Harris', 'Dupont', 'Clark', 'Faure', 'Lewis',
+            'Andre', 'Young', 'Morel', 'King', 'Fournier', 'Wright', 'Garnier', 'Scott', 'Chevalier', 'Green',
+            'Francois', 'Baker', 'Perrin', 'Adams', 'Robin', 'Nelson', 'Clement', 'Hill', 'Henry', 'Campbell',
+        ];
+        $storeTypes = ['fashion', 'boutique', 'atelier', 'studio', 'wear', 'shop', 'store', 'market', 'catalog', 'outlet'];
+
+        for ($index = 1; $index <= 50; ++$index) {
+            $firstName = $firstNames[$index - 1];
+            $lastName = $lastNames[$index - 1];
+            $slug = strtolower($firstName.'-'.$lastName);
+            $storeType = $storeTypes[($index - 1) % count($storeTypes)];
+
+            $users[] = [
+                'name' => $firstName.' '.$lastName,
+                'email' => sprintf('merchant%02d@example.test', $index),
+                'website' => sprintf('https://%s-%s.test', $slug, $storeType),
+                'roles' => [UserRole::USER],
+                'plainPassword' => 'user12345',
+            ];
+        }
 
         $createdUsers = [];
 
@@ -72,8 +87,20 @@ final class AppFixtures extends Fixture
 
             $manager->persist($user);
             $createdUsers[$userData['email']] = $user;
+
+            if (!\in_array(UserRole::ADMIN, $userData['roles'], true)) {
+                $this->createApiToken($manager, $user, count($createdUsers) - 1);
+            }
         }
 
+        return $createdUsers;
+    }
+
+    /**
+     * @return array<string, Offer>
+     */
+    private function loadOffers(ObjectManager $manager): array
+    {
         $offers = [
             [
                 'name' => 'Starter Monthly',
@@ -180,89 +207,154 @@ final class AppFixtures extends Fixture
             $createdOffers[$offerData['name']] = $offer;
         }
 
-        $subscriptions = [
-            [
-                'userEmail' => 'alice@example.test',
-                'offerName' => 'Starter Monthly',
-                'status' => Subscription::STATUS_ACTIVE,
-                'startsAt' => '-10 days',
-                'endsAt' => '+20 days',
-                'tokenValue' => 'dm_test_alice_starter_001',
-                'tokenActive' => true,
-                'creditBatches' => [
-                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 100, 'remainingAmount' => 72, 'expiresAt' => '+20 days'],
-                    ['type' => CreditSourceType::ONE_TIME_PURCHASE, 'initialAmount' => 40, 'remainingAmount' => 18, 'expiresAt' => null],
-                ],
-            ],
-            [
-                'userEmail' => 'ben@example.test',
-                'offerName' => 'Growth Monthly',
-                'status' => Subscription::STATUS_ACTIVE,
-                'startsAt' => '-5 days',
-                'endsAt' => '+25 days',
-                'tokenValue' => 'dm_test_ben_growth_001',
-                'tokenActive' => true,
-                'creditBatches' => [
-                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 350, 'remainingAmount' => 301, 'expiresAt' => '+25 days'],
-                ],
-            ],
-            [
-                'userEmail' => 'chloe@example.test',
-                'offerName' => 'Scale Monthly',
-                'status' => Subscription::STATUS_ACTIVE,
-                'startsAt' => '-20 days',
-                'endsAt' => '+10 days',
-                'tokenValue' => 'dm_test_chloe_scale_001',
-                'tokenActive' => true,
-                'creditBatches' => [
-                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 900, 'remainingAmount' => 522, 'expiresAt' => '+10 days'],
-                    ['type' => CreditSourceType::ONE_TIME_PURCHASE, 'initialAmount' => 125, 'remainingAmount' => 125, 'expiresAt' => null],
-                ],
-            ],
-            [
-                'userEmail' => 'david@example.test',
-                'offerName' => 'Starter Monthly',
-                'status' => Subscription::STATUS_CANCELLED,
-                'startsAt' => '-70 days',
-                'endsAt' => '-40 days',
-                'tokenValue' => 'dm_test_david_cancelled_001',
-                'tokenActive' => false,
-                'creditBatches' => [
-                    ['type' => CreditSourceType::SUBSCRIPTION, 'initialAmount' => 100, 'remainingAmount' => 0, 'expiresAt' => '-40 days'],
-                ],
-            ],
+        return $createdOffers;
+    }
+
+    /**
+     * @param array<string, User>  $users
+     * @param array<string, Offer> $offers
+     */
+    private function loadSubscriptions(ObjectManager $manager, array $users, array $offers): void
+    {
+        $subscriptionOffers = [
+            'Starter Monthly',
+            'Growth Monthly',
+            'Scale Monthly',
+            'Starter Annual',
+            'Growth Annual',
+            'Scale Annual',
         ];
+        $oneTimeOffers = [
+            'Free Trial Pack',
+            'Small Credit Pack',
+            'Medium Credit Pack',
+            'Large Credit Pack',
+            'Enterprise Credit Pack',
+        ];
+        for ($userIndex = 1; $userIndex <= 50; ++$userIndex) {
+            $userEmail = sprintf('merchant%02d@example.test', $userIndex);
+            $subscriptionCount = 1 + ($userIndex % 3);
+            $activeSubscriptionIndex = 1 + (($userIndex - 1) % $subscriptionCount);
 
-        foreach ($subscriptions as $subscriptionData) {
-            $subscription = (new Subscription())
-                ->setUser($createdUsers[$subscriptionData['userEmail']])
-                ->setOffer($createdOffers[$subscriptionData['offerName']])
-                ->setStatus($subscriptionData['status'])
-                ->setStartsAt(new \DateTimeImmutable($subscriptionData['startsAt']))
-                ->setEndsAt(new \DateTimeImmutable($subscriptionData['endsAt']));
+            for ($subscriptionIndex = 1; $subscriptionIndex <= $subscriptionCount; ++$subscriptionIndex) {
+                $status = $subscriptionIndex === $activeSubscriptionIndex
+                    ? Subscription::STATUS_ACTIVE
+                    : (0 === ($userIndex + $subscriptionIndex) % 2 ? Subscription::STATUS_CANCELLED : Subscription::STATUS_EXPIRED);
+                $offerName = $subscriptionOffers[($userIndex + $subscriptionIndex - 2) % count($subscriptionOffers)];
+                $offer = $offers[$offerName];
+                $startedDaysAgo = 8 + ($userIndex * 3) + ($subscriptionIndex * 17);
+                $startsAt = new \DateTimeImmutable(sprintf('-%d days', $startedDaysAgo));
+                $endsAt = $this->resolveSubscriptionEndDate($status, $startsAt, $offer->getDurationInMonths() ?? 1, $userIndex, $subscriptionIndex);
 
-            $manager->persist($subscription);
+                $subscription = (new Subscription())
+                    ->setUser($users[$userEmail])
+                    ->setOffer($offer)
+                    ->setStatus($status)
+                    ->setStartsAt($startsAt)
+                    ->setEndsAt($endsAt);
 
-            $apiToken = (new ApiToken())
-                ->setSubscription($subscription)
-                ->setTokenValue($subscriptionData['tokenValue'])
-                ->setIsActive($subscriptionData['tokenActive'])
-                ->setActivatedAt($subscriptionData['tokenActive'] ? new \DateTimeImmutable($subscriptionData['startsAt']) : null);
+                $manager->persist($subscription);
 
-            $manager->persist($apiToken);
+                $this->createSubscriptionCreditBatch($manager, $subscription, $offer, $startsAt, $endsAt, $userIndex, $subscriptionIndex, $status);
 
-            foreach ($subscriptionData['creditBatches'] as $creditBatchData) {
-                $creditBatch = (new CreditBatch())
-                    ->setSubscription($subscription)
-                    ->setType($creditBatchData['type'])
-                    ->setInitialAmount($creditBatchData['initialAmount'])
-                    ->setRemainingAmount($creditBatchData['remainingAmount'])
-                    ->setExpiresAt(null === $creditBatchData['expiresAt'] ? null : new \DateTimeImmutable($creditBatchData['expiresAt']));
+                $extraPackCount = ($userIndex + $subscriptionIndex) % 4;
 
-                $manager->persist($creditBatch);
+                for ($packIndex = 1; $packIndex <= $extraPackCount; ++$packIndex) {
+                    $packOffer = $offers[$oneTimeOffers[($userIndex + $subscriptionIndex + $packIndex) % count($oneTimeOffers)]];
+                    $this->createOneTimeCreditBatch($manager, $subscription, $packOffer, $startsAt, $userIndex, $subscriptionIndex, $packIndex);
+                }
             }
         }
+    }
 
-        $manager->flush();
+    private function resolveSubscriptionEndDate(
+        string $status,
+        \DateTimeImmutable $startsAt,
+        int $durationInMonths,
+        int $userIndex,
+        int $subscriptionIndex,
+    ): ?\DateTimeImmutable {
+        if (Subscription::STATUS_ACTIVE === $status) {
+            return $startsAt->modify(sprintf('+%d months', $durationInMonths));
+        }
+
+        if (Subscription::STATUS_CANCELLED === $status) {
+            return $startsAt->modify(sprintf('+%d days', 12 + (($userIndex + $subscriptionIndex) % 18)));
+        }
+
+        return $startsAt->modify(sprintf('+%d months', $durationInMonths));
+    }
+
+    private function createApiToken(
+        ObjectManager $manager,
+        User $user,
+        int $userIndex,
+    ): void {
+        $apiToken = (new ApiToken())
+            ->setUser($user)
+            ->setTokenValue(sprintf('dm_test_user_%02d_%s', $userIndex, substr(hash('xxh32', $user->getEmail() ?? (string) $userIndex), 0, 12)))
+            ->setIsActive(true)
+            ->setActivatedAt(new \DateTimeImmutable(sprintf('-%d days', 4 + ($userIndex % 40))));
+
+        $manager->persist($apiToken);
+    }
+
+    private function createSubscriptionCreditBatch(
+        ObjectManager $manager,
+        Subscription $subscription,
+        Offer $offer,
+        \DateTimeImmutable $startsAt,
+        ?\DateTimeImmutable $endsAt,
+        int $userIndex,
+        int $subscriptionIndex,
+        string $status,
+    ): void {
+        $initialAmount = $offer->getCreditAmount() ?? 0;
+        $usageRate = 15 + (($userIndex * 7 + $subscriptionIndex * 11) % 78);
+        $remainingAmount = max(0, $initialAmount - (int) round($initialAmount * $usageRate / 100));
+
+        if (Subscription::STATUS_EXPIRED === $status) {
+            $remainingAmount = min($remainingAmount, (int) floor($initialAmount * 0.12));
+        }
+
+        if (Subscription::STATUS_CANCELLED === $status) {
+            $remainingAmount = min($remainingAmount, (int) floor($initialAmount * 0.35));
+        }
+
+        $creditBatch = (new CreditBatch())
+            ->setSubscription($subscription)
+            ->setType(CreditSourceType::SUBSCRIPTION)
+            ->setInitialAmount($initialAmount)
+            ->setRemainingAmount($remainingAmount)
+            ->setExpiresAt($endsAt)
+            ->setCreatedAt($startsAt->modify('+2 minutes'));
+
+        $manager->persist($creditBatch);
+    }
+
+    private function createOneTimeCreditBatch(
+        ObjectManager $manager,
+        Subscription $subscription,
+        Offer $offer,
+        \DateTimeImmutable $startsAt,
+        int $userIndex,
+        int $subscriptionIndex,
+        int $packIndex,
+    ): void {
+        $initialAmount = $offer->getCreditAmount() ?? 0;
+        $usageRate = 5 + (($userIndex * 13 + $subscriptionIndex * 5 + $packIndex * 17) % 90);
+        $remainingAmount = max(0, $initialAmount - (int) round($initialAmount * $usageRate / 100));
+        $purchasedAt = $startsAt->modify(sprintf('+%d days', 1 + ($packIndex * 6) + ($userIndex % 9)));
+        $expiresAt = 0 === $packIndex % 2 ? null : $purchasedAt->modify('+90 days');
+
+        $creditBatch = (new CreditBatch())
+            ->setSubscription($subscription)
+            ->setType(CreditSourceType::ONE_TIME_PURCHASE)
+            ->setInitialAmount($initialAmount)
+            ->setRemainingAmount($remainingAmount)
+            ->setExpiresAt($expiresAt)
+            ->setCreatedAt($purchasedAt);
+
+        $manager->persist($creditBatch);
     }
 }

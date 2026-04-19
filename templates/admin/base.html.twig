@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% block admin_title %}Admin{% endblock %}{% endblock %}
+
+{% block importmap %}{{ importmap('admin') }}{% endblock %}
+
+{% block body %}
+    {% block admin_body %}{% endblock %}
+{% endblock %}

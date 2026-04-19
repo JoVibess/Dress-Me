@@ -12,8 +12,16 @@
  * The "importmap:require" command can be used to add new entries to this file.
  */
 return [
-    'app' => [
-        'path' => './assets/app.js',
+    'front' => [
+        'path' => './assets/front.js',
+        'entrypoint' => true,
+    ],
+    'middle' => [
+        'path' => './assets/middle.js',
+        'entrypoint' => true,
+    ],
+    'admin' => [
+        'path' => './assets/admin.js',
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
@@ -34,5 +42,18 @@ return [
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.8',
         'type' => 'css',
+    ],
+    '@tabler/core' => [
+        'version' => '1.4.0',
+    ],
+    '@tabler/core/dist/css/tabler.min.css' => [
+        'version' => '1.4.0',
+        'type' => 'css',
+    ],
+    'countup.js' => [
+        'version' => '2.10.0',
+    ],
+    'apexcharts' => [
+        'version' => '5.10.6',
     ],
 ];

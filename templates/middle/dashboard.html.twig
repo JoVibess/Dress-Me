@@ -1,77 +1,290 @@
-{% extends 'base.html.twig' %}
+{% extends 'middle/base.html.twig' %}
 
-{% block title %}User dashboard{% endblock %}
+{% block middle_title %}User dashboard{% endblock %}
 
-{% block body %}
-    <h1>User dashboard</h1>
-    <p>Welcome {{ current_user.name }}.</p>
+{% block middle_body %}
+    {% set latest_purchase = latest_credit_batches|first %}
 
-    <section>
-        <h2>Credits</h2>
-        <p>
-            Available credits:
-            <strong>{{ total_credits }}</strong>
-        </p>
-    </section>
+    <div class="middle-app" data-bs-theme="light" data-middle-theme>
+        <div class="page">
+            <header class="navbar navbar-expand-md d-print-none middle-navbar">
+                <div class="container-xl">
+                    <a class="navbar-brand middle-navbar__brand" href="{{ path('front_home') }}">DressMe</a>
 
-    <section>
-        <h2>API token</h2>
+                    <div class="navbar-nav flex-row order-md-last align-items-center gap-2">
+                        <div class="middle-theme-toggle" data-theme-toggle aria-label="Choose color theme">
+                            <button class="middle-theme-toggle__button" type="button" data-theme-option="light" aria-label="Enable light mode">
+                                <img class="middle-theme-toggle__icon middle-theme-toggle__icon--sun" src="{{ asset('images/sun_icon.svg') }}" alt="">
+                            </button>
+                            <span class="middle-theme-toggle__separator">/</span>
+                            <button class="middle-theme-toggle__button" type="button" data-theme-option="dark" aria-label="Enable dark mode">
+                                <img class="middle-theme-toggle__icon middle-theme-toggle__icon--moon" src="{{ asset('images/moon_icon.svg') }}" alt="">
+                            </button>
+                        </div>
 
-        {% if api_tokens is empty %}
-            <p>No API token has been generated yet.</p>
-        {% else %}
-            <ul>
-                {% for token in api_tokens %}
-                    <li>
-                        <code>{{ token.tokenValue }}</code>
-                        -
-                        {% if token.active %}
-                            valid
-                        {% else %}
-                            inactive
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </section>
+                        <a class="btn btn-outline-primary" href="{{ path('front_offers') }}">Buy credits</a>
 
-    <section>
-        <h2>Latest purchases</h2>
+                        <form class="m-0" method="post" action="{{ path('app_logout') }}">
+                            <button class="btn btn-ghost-secondary" type="submit">Log out</button>
+                        </form>
+                    </div>
+                </div>
+            </header>
 
-        {% if latest_credit_batches is empty %}
-            <p>No credit purchase has been recorded yet.</p>
-        {% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Initial credits</th>
-                        <th>Remaining credits</th>
-                        <th>Expires at</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for credit_batch in latest_credit_batches %}
-                        <tr>
-                            <td>{{ credit_batch.type.value|replace({'_': ' '})|title }}</td>
-                            <td>{{ credit_batch.initialAmount }}</td>
-                            <td>{{ credit_batch.remainingAmount }}</td>
-                            <td>
-                                {% if credit_batch.expiresAt %}
-                                    {{ credit_batch.expiresAt|date('Y-m-d') }}
-                                {% else %}
-                                    No expiration
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    </section>
+            <div class="page-wrapper">
+                <div class="page-header d-print-none middle-page-header">
+                    <div class="container-xl">
+                        <div class="row g-3">
+                            <div class="col">
+                                <div class="page-pretitle">Merchant workspace</div>
+                                <h1 class="page-title">Welcome back, {{ current_user.name }}</h1>
+                                <div class="text-secondary mt-2">
+                                    Monitor your current plan, available credits and plugin authentication.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <form method="post" action="{{ path('app_logout') }}">
-        <button type="submit">Log out</button>
-    </form>
+                <div class="page-body">
+                    <div class="container-xl">
+                        <div class="row row-cards mb-4">
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card card-sm middle-kpi middle-kpi--credits">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="middle-kpi__icon bg-primary text-primary-fg">Cr</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-secondary text-uppercase fs-6 fw-bold">Available credits</div>
+                                                <div class="h1 mb-0" data-countup='{"duration":1.4,"separator":" "}'>{{ total_credits }}</div>
+                                                <div class="text-secondary small mt-1">Credits available on the active plan</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card card-sm middle-kpi">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="middle-kpi__icon {{ active_token ? 'bg-green text-green-fg' : 'bg-secondary text-secondary-fg' }}">API</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-secondary text-uppercase fs-6 fw-bold">Plugin token</div>
+                                                <div class="h1 mb-0">{{ active_token ? 'Valid' : 'Missing' }}</div>
+                                                <div class="text-secondary small mt-1">
+                                                    {{ active_token ? 'Ready for WordPress authentication' : 'No active token for this plan' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card card-sm middle-kpi middle-store-card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-secondary text-uppercase fs-6 fw-bold mb-1">Connected store</div>
+                                                <div class="h2 mb-0 middle-store-card__site">{{ current_user.website }}</div>
+                                                <div class="text-secondary small mt-1">{{ current_user.email }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-cards">
+                            <div class="col-lg-7">
+                                <div class="card h-100">
+                                    <div class="card-header middle-card-header">
+                                        <div>
+                                            <h2 class="card-title mb-1">Active API token</h2>
+                                            <div class="card-subtitle">Copy this token into the WordPress plugin to authenticate requests.</div>
+                                        </div>
+                                        {% if active_token %}
+                                            <span class="status status-green">Valid</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="card-body">
+                                        {% if active_token %}
+                                            <div class="middle-active-token">
+                                                <code class="middle-token-value middle-token-value--large">{{ active_token.tokenValue }}</code>
+                                                <div class="text-secondary small mt-3">
+                                                    Activated {{ active_token.activatedAt ? active_token.activatedAt|date('M d, Y') : active_token.createdAt|date('M d, Y') }}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="empty">
+                                                <p class="empty-title">No active token</p>
+                                                <p class="empty-subtitle text-secondary">An active token will be generated when a plan is active.</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <div>
+                                            <h2 class="card-title mb-1">Current plan</h2>
+                                            <div class="card-subtitle">Only one subscription can be active at a time.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        {% if active_subscription %}
+                                            <div class="d-flex align-items-start justify-content-between gap-3">
+                                                <div>
+                                                    <div class="h2 mb-1">{{ active_subscription.offer ? active_subscription.offer.name : 'Unknown offer' }}</div>
+                                                    <div class="text-secondary">
+                                                        {{ active_subscription.offer ? active_subscription.offer.creditAmount : 0 }} credits
+                                                        {% if active_subscription.offer and active_subscription.offer.durationInMonths %}
+                                                            · {{ active_subscription.offer.durationInMonths }} month{{ active_subscription.offer.durationInMonths > 1 ? 's' : '' }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <span class="status status-green">Active</span>
+                                            </div>
+
+                                            <div class="hr"></div>
+
+                                            <dl class="row mb-0">
+                                                <dt class="col-5 text-secondary fw-normal">Started</dt>
+                                                <dd class="col-7 text-end">{{ active_subscription.startsAt|date('M d, Y') }}</dd>
+
+                                                <dt class="col-5 text-secondary fw-normal">Renewal</dt>
+                                                <dd class="col-7 text-end">
+                                                    {% if active_subscription.endsAt %}
+                                                        {{ active_subscription.endsAt|date('M d, Y') }}
+                                                    {% else %}
+                                                        No end date
+                                                    {% endif %}
+                                                </dd>
+                                            </dl>
+                                        {% else %}
+                                            <div class="empty">
+                                                <p class="empty-title">No active plan</p>
+                                                <p class="empty-subtitle text-secondary">Choose an offer to start using virtual try-on credits.</p>
+                                                <div class="empty-action">
+                                                    <a class="btn btn-primary" href="{{ path('front_offers') }}">View offers</a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div>
+                                            <h2 class="card-title mb-1">Credit usage rate</h2>
+                                            <div class="card-subtitle">Usage trend across your active plan credit batches.</div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if credit_usage_chart.labels is empty %}
+                                            <div class="empty">
+                                                <p class="empty-title">No usage data yet</p>
+                                                <p class="empty-subtitle text-secondary">Credit usage will appear once batches are created.</p>
+                                            </div>
+                                        {% else %}
+                                            <div
+                                                id="credit-usage-chart"
+                                                class="middle-chart"
+                                                data-credit-usage-chart="{{ credit_usage_chart|json_encode|e('html_attr') }}"
+                                            ></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div>
+                                            <h2 class="card-title mb-1">Latest purchases</h2>
+                                            <div class="card-subtitle">
+                                                {% if latest_purchase %}
+                                                    Last credit batch created {{ latest_purchase.createdAt|date('M d, Y') }}.
+                                                {% else %}
+                                                    Your latest active-plan credit batches will appear here after checkout.
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="card-actions">
+                                            <a class="btn btn-primary" href="{{ path('front_offers') }}">Buy credits</a>
+                                        </div>
+                                    </div>
+
+                                    {% if latest_credit_batches is empty %}
+                                        <div class="card-body">
+                                            <div class="empty">
+                                                <p class="empty-title">No purchase yet</p>
+                                                <p class="empty-subtitle text-secondary">Purchase a credit pack or subscription to populate this activity table.</p>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="table-responsive">
+                                            <table class="table card-table table-vcenter text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Type</th>
+                                                        <th>Initial credits</th>
+                                                        <th>Remaining</th>
+                                                        <th>Used</th>
+                                                        <th>Expiration</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for credit_batch in latest_credit_batches %}
+                                                        {% set initial_amount = credit_batch.initialAmount ?: 0 %}
+                                                        {% set remaining_amount = credit_batch.remainingAmount ?: 0 %}
+                                                        {% set used_percent = initial_amount > 0 ? ((initial_amount - remaining_amount) / initial_amount * 100)|round : 0 %}
+
+                                                        <tr>
+                                                            <td>
+                                                                <div class="fw-bold">{{ credit_batch.type.value|replace({'_': ' '})|title }}</div>
+                                                                <div class="text-secondary small">Batch #{{ credit_batch.id }}</div>
+                                                            </td>
+                                                            <td>{{ initial_amount }}</td>
+                                                            <td>{{ remaining_amount }}</td>
+                                                            <td class="w-25">
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <div class="progress progress-sm flex-fill">
+                                                                        <div class="progress-bar" style="width: {{ used_percent }}%" role="progressbar" aria-valuenow="{{ used_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="{{ used_percent }}% credits used"></div>
+                                                                    </div>
+                                                                    <span class="text-secondary small">{{ used_percent }}%</span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                {% if credit_batch.expiresAt %}
+                                                                    {{ credit_batch.expiresAt|date('M d, Y') }}
+                                                                {% else %}
+                                                                    <span class="text-secondary">No expiration</span>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

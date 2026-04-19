@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% block middle_title %}Dashboard{% endblock %}{% endblock %}
+
+{% block importmap %}{{ importmap('middle') }}{% endblock %}
+
+{% block body %}
+    {% block middle_body %}{% endblock %}
+{% endblock %}

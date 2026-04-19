@@ -15,7 +15,7 @@ class ApiToken
 
     #[ORM\ManyToOne(inversedBy: 'apiTokens')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Subscription $subscription = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $tokenValue = null;
@@ -40,14 +40,14 @@ class ApiToken
         return $this->id;
     }
 
-    public function getSubscription(): ?Subscription
+    public function getUser(): ?User
     {
-        return $this->subscription;
+        return $this->user;
     }
 
-    public function setSubscription(?Subscription $subscription): static
+    public function setUser(?User $user): static
     {
-        $this->subscription = $subscription;
+        $this->user = $user;
 
         return $this;
     }

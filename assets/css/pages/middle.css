@@ -1,0 +1,186 @@
+.middle-app {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(var(--tblr-primary-rgb), 0.12), transparent 34rem),
+        var(--tblr-bg-surface-secondary);
+}
+
+.middle-app[data-bs-theme="dark"] {
+    background:
+        radial-gradient(circle at top left, rgba(var(--tblr-primary-rgb), 0.2), transparent 34rem),
+        #111827;
+}
+
+.middle-navbar {
+    border-bottom: 1px solid var(--tblr-border-color);
+    background: color-mix(in srgb, var(--tblr-bg-surface) 92%, transparent);
+    backdrop-filter: blur(14px);
+}
+
+.middle-navbar__brand {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.middle-page-header {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.middle-app[data-bs-theme="dark"] .page-title {
+    color: #fff;
+}
+
+.middle-store-card {
+    border-color: var(--tblr-border-color-translucent);
+    box-shadow: var(--tblr-shadow-card);
+}
+
+.middle-store-card__site,
+.middle-token-value {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.middle-kpi {
+    height: 100%;
+    border-color: var(--tblr-border-color-translucent);
+    box-shadow: var(--tblr-shadow-card);
+}
+
+.middle-kpi--credits {
+    background:
+        linear-gradient(135deg, rgba(var(--tblr-primary-rgb), 0.12), transparent 58%),
+        var(--tblr-card-bg);
+}
+
+.middle-kpi__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.middle-kpi__plan {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.middle-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.middle-card-header .status {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.middle-active-token {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.middle-token-value {
+    padding: 0.25rem 0.45rem;
+    border-radius: 0.35rem;
+    background: var(--tblr-bg-surface-secondary);
+    color: var(--tblr-body-color);
+}
+
+.middle-token-value--large {
+    padding: 1rem;
+    font-size: 0.95rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.middle-chart {
+    min-height: 280px;
+}
+
+.middle-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+}
+
+.middle-theme-toggle__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    opacity: 0.38;
+    transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.middle-theme-toggle__button:hover,
+.middle-theme-toggle__button:focus-visible {
+    opacity: 0.72;
+    transform: translateY(-1px);
+}
+
+.middle-theme-toggle[data-theme-state="light"] [data-theme-option="light"],
+.middle-theme-toggle[data-theme-state="dark"] [data-theme-option="dark"] {
+    opacity: 1;
+}
+
+.middle-theme-toggle__icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.middle-theme-toggle__icon--moon {
+    width: 13px;
+    height: 13px;
+}
+
+.middle-theme-toggle__separator {
+    color: var(--tblr-secondary-color);
+    font-weight: 500;
+}
+
+.middle-app[data-bs-theme="dark"] .middle-theme-toggle__icon--sun {
+    filter: invert(94%) sepia(5%) saturate(203%) hue-rotate(182deg) brightness(99%) contrast(92%);
+}
+
+.middle-app[data-bs-theme="dark"] .middle-theme-toggle__icon--moon {
+    filter: brightness(0) invert(1);
+}
+
+.middle-app[data-bs-theme="dark"] .middle-theme-toggle__separator {
+    color: #94a3b8;
+}
+
+.middle-app[data-bs-theme="dark"] .apexcharts-xaxis text,
+.middle-app[data-bs-theme="dark"] .apexcharts-yaxis text {
+    fill: #cbd5e1 !important;
+}
+
+.middle-app[data-bs-theme="dark"] .apexcharts-gridline {
+    stroke: rgba(203, 213, 225, 0.18) !important;
+}
+
+@media (max-width: 767.98px) {
+    .middle-navbar .container-xl {
+        gap: 1rem;
+    }
+
+}

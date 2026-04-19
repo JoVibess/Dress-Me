@@ -44,12 +44,6 @@ class Subscription
     private ?\DateTimeImmutable $createdAt = null;
 
     /**
-     * @var Collection<int, ApiToken>
-     */
-    #[ORM\OneToMany(targetEntity: ApiToken::class, mappedBy: 'subscription')]
-    private Collection $apiTokens;
-
-    /**
      * @var Collection<int, CreditBatch>
      */
     #[ORM\OneToMany(targetEntity: CreditBatch::class, mappedBy: 'subscription')]
@@ -58,7 +52,6 @@ class Subscription
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->apiTokens = new ArrayCollection();
         $this->creditBatches = new ArrayCollection();
     }
 
@@ -123,36 +116,6 @@ class Subscription
     public function setEndsAt(?\DateTimeImmutable $endsAt): static
     {
         $this->endsAt = $endsAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ApiToken>
-     */
-    public function getApiTokens(): Collection
-    {
-        return $this->apiTokens;
-    }
-
-    public function addApiToken(ApiToken $apiToken): static
-    {
-        if (!$this->apiTokens->contains($apiToken)) {
-            $this->apiTokens->add($apiToken);
-            $apiToken->setSubscription($this);
-        }
-
-        return $this;
-    }
-
-    public function removeApiToken(ApiToken $apiToken): static
-    {
-        if ($this->apiTokens->removeElement($apiToken)) {
-            // set the owning side to null (unless already changed)
-            if ($apiToken->getSubscription() === $this) {
-                $apiToken->setSubscription(null);
-            }
-        }
 
         return $this;
     }

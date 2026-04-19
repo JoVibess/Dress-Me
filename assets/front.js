@@ -1,4 +1,5 @@
 import './stimulus_bootstrap.js';
+import './controllers/csrf_protection_controller.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 /*
@@ -15,5 +16,3 @@ import './js/cart-offcanvas.js';
 import './js/checkout-cart.js';
 import './js/subscription-switcher.js';
 import './js/contact-form-switcher.js';
-
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
