@@ -50,15 +50,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $subscriptions;
 
     /**
-     * @var Collection<int, ApiToken>
+     * @var Collection<int, Store>
      */
-    #[ORM\OneToMany(targetEntity: ApiToken::class, mappedBy: 'user')]
-    private Collection $apiTokens;
+    #[ORM\OneToMany(targetEntity: Store::class, mappedBy: 'user')]
+    private Collection $stores;
 
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
-        $this->apiTokens = new ArrayCollection();
+        $this->stores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,31 +179,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, ApiToken>
+     * @return Collection<int, Store>
      */
-    public function getApiTokens(): Collection
+    public function getStores(): Collection
     {
-        return $this->apiTokens;
+        return $this->stores;
     }
 
-    public function addApiToken(ApiToken $apiToken): static
+    public function addStore(Store $store): static
     {
-        if (!$this->apiTokens->contains($apiToken)) {
-            $this->apiTokens->add($apiToken);
-            $apiToken->setUser($this);
+        if (!$this->stores->contains($store)) {
+            $this->stores->add($store);
+            $store->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeApiToken(ApiToken $apiToken): static
+    public function removeStore(Store $store): static
     {
-        if ($this->apiTokens->removeElement($apiToken)) {
-            if ($apiToken->getUser() === $this) {
-                $apiToken->setUser(null);
+        if ($this->stores->removeElement($store)) {
+            if ($store->getUser() === $this) {
+                $store->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function getPrimaryStore(): ?Store
+    {
+        foreach ($this->stores as $store) {
+            if ($store->isActive()) {
+                return $store;
+            }
+        }
+
+        return $this->stores->first() ?: null;
     }
 }

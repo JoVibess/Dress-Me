@@ -91,8 +91,10 @@
                                         <div class="row align-items-center">
                                             <div class="col">
                                                 <div class="text-secondary text-uppercase fs-6 fw-bold mb-1">Connected store</div>
-                                                <div class="h2 mb-0 middle-store-card__site">{{ current_user.website }}</div>
-                                                <div class="text-secondary small mt-1">{{ current_user.email }}</div>
+                                                <div class="h2 mb-0 middle-store-card__site">{{ current_store ? current_store.website : current_user.website }}</div>
+                                                <div class="text-secondary small mt-1">
+                                                    {{ current_store ? current_store.name : current_user.email }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

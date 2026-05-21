@@ -16,28 +16,20 @@ class ApiTokenRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiToken::class);
     }
 
-    //    /**
-    //     * @return ApiToken[] Returns an array of ApiToken objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ApiToken
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findActiveByTokenValue(string $tokenValue): ?ApiToken
+    {
+        return $this->createQueryBuilder('apiToken')
+            ->leftJoin('apiToken.store', 'store')
+            ->addSelect('store')
+            ->leftJoin('store.user', 'user')
+            ->addSelect('user')
+            ->andWhere('apiToken.tokenValue = :tokenValue')
+            ->andWhere('apiToken.isActive = :isActive')
+            ->setParameter('tokenValue', $tokenValue)
+            ->setParameter('isActive', true)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

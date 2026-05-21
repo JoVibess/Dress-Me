@@ -21,6 +21,7 @@ final class DashboardController extends AbstractController
         }
 
         $activeSubscription = null;
+        $currentStore = $user->getPrimaryStore();
 
         foreach ($user->getSubscriptions() as $subscription) {
             if (Subscription::STATUS_ACTIVE === $subscription->getStatus()) {
@@ -33,12 +34,7 @@ final class DashboardController extends AbstractController
         $creditBatches = [];
         $totalCredits = 0;
 
-        foreach ($user->getApiTokens() as $apiToken) {
-            if ($apiToken->isActive()) {
-                $activeToken = $apiToken;
-                break;
-            }
-        }
+        $activeToken = $currentStore?->getActiveApiToken();
 
         if (null !== $activeSubscription) {
             foreach ($activeSubscription->getCreditBatches() as $creditBatch) {
@@ -54,6 +50,7 @@ final class DashboardController extends AbstractController
 
         return $this->render('middle/dashboard.html.twig', [
             'current_user' => $user,
+            'current_store' => $currentStore,
             'active_subscription' => $activeSubscription,
             'active_token' => $activeToken,
             'total_credits' => $totalCredits,

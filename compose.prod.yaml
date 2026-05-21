@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MYSQL_DATABASE: dressme
+      MYSQL_USER: dressme
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - dressme-db-data:/var/lib/mysql
+
+  www:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    depends_on:
+      - db
+    environment:
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: "mysql://dressme:${MYSQL_PASSWORD}@db:3306/dressme?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
+      DEFAULT_URI: "https://dressme.joeydecroix.com"
+      TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
+      TRUSTED_HOSTS: "^dressme\\.joeydecroix\\.com$"
+      MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+      MAILER_DSN: "null://null"
+      MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
+      CONTACT_TO_EMAIL: "ton-email@example.com"
+    volumes:
+      - dressme-var:/var/www/var
+
+volumes:
+  dressme-db-data:
+  dressme-var:

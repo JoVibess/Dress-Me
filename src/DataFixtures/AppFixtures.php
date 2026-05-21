@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\ApiToken;
 use App\Entity\CreditBatch;
 use App\Entity\Offer;
+use App\Entity\Store;
 use App\Entity\Subscription;
 use App\Entity\User;
 use App\Enum\CreditSourceType;
@@ -88,8 +89,10 @@ final class AppFixtures extends Fixture
             $manager->persist($user);
             $createdUsers[$userData['email']] = $user;
 
+            $store = $this->createStore($manager, $user, $userData['website']);
+
             if (!\in_array(UserRole::ADMIN, $userData['roles'], true)) {
-                $this->createApiToken($manager, $user, count($createdUsers) - 1);
+                $this->createApiToken($manager, $store, count($createdUsers) - 1);
             }
         }
 
@@ -285,18 +288,32 @@ final class AppFixtures extends Fixture
         return $startsAt->modify(sprintf('+%d months', $durationInMonths));
     }
 
-    private function createApiToken(
-        ObjectManager $manager,
-        User $user,
-        int $userIndex,
-    ): void {
+    private function createApiToken(ObjectManager $manager, Store $store, int $userIndex): void
+    {
         $apiToken = (new ApiToken())
-            ->setUser($user)
-            ->setTokenValue(sprintf('dm_test_user_%02d_%s', $userIndex, substr(hash('xxh32', $user->getEmail() ?? (string) $userIndex), 0, 12)))
+            ->setStore($store)
+            ->setTokenValue(sprintf('dm_test_store_%02d_%s', $userIndex, substr(hash('xxh32', $store->getWebsite() ?? (string) $userIndex), 0, 12)))
             ->setIsActive(true)
             ->setActivatedAt(new \DateTimeImmutable(sprintf('-%d days', 4 + ($userIndex % 40))));
 
         $manager->persist($apiToken);
+    }
+
+    private function createStore(ObjectManager $manager, User $user, string $website): Store
+    {
+        $host = (string) parse_url($website, \PHP_URL_HOST);
+        $name = '' !== $host ? ucfirst((string) preg_replace('/[-_.]+/', ' ', preg_replace('/\.test$/', '', $host))) : $user->getName().' Store';
+
+        $store = (new Store())
+            ->setUser($user)
+            ->setName($name)
+            ->setWebsite($website)
+            ->setIsActive(true)
+            ->setAnonymousDailyQuota(20);
+
+        $manager->persist($store);
+
+        return $store;
     }
 
     private function createSubscriptionCreditBatch(
