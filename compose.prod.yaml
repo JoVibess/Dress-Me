@@ -12,7 +12,7 @@ services:
   www:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/php/Dockerfile.prod
     depends_on:
       - db
     environment:
@@ -26,9 +26,5 @@ services:
       MAILER_DSN: "null://null"
       MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
       CONTACT_TO_EMAIL: "ton-email@example.com"
-    volumes:
-      - dressme-var:/var/www/var
-
 volumes:
   dressme-db-data:
-  dressme-var:
