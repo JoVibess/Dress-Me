@@ -15,6 +15,8 @@ services:
       dockerfile: docker/php/Dockerfile.prod
     depends_on:
       - db
+    volumes:
+      - dressme-uploads-data:/var/www/public/uploads
     environment:
       APP_ENV: prod
       APP_SECRET: ${APP_SECRET}
@@ -26,5 +28,30 @@ services:
       MAILER_DSN: "null://null"
       MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
       CONTACT_TO_EMAIL: "ton-email@example.com"
+      GOOGLE_AI_STUDIO_API_KEY: ${GOOGLE_AI_STUDIO_API_KEY}
+
+  messenger:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.prod
+    depends_on:
+      - db
+    command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
+    restart: unless-stopped
+    volumes:
+      - dressme-uploads-data:/var/www/public/uploads
+    environment:
+      APP_ENV: prod
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: "mysql://dressme:${MYSQL_PASSWORD}@db:3306/dressme?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
+      DEFAULT_URI: "https://dressme.joeydecroix.com"
+      TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
+      TRUSTED_HOSTS: "^dressme\\.joeydecroix\\.com$"
+      MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+      MAILER_DSN: "null://null"
+      MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
+      CONTACT_TO_EMAIL: "ton-email@example.com"
+      GOOGLE_AI_STUDIO_API_KEY: ${GOOGLE_AI_STUDIO_API_KEY}
 volumes:
   dressme-db-data:
+  dressme-uploads-data:

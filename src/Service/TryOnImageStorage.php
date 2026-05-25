@@ -15,6 +15,8 @@ final readonly class TryOnImageStorage
     public function storeCustomerImage(string $jobId, string $dataUri): string
     {
         [$mimeType, $binary] = $this->decodeDataUri($dataUri);
+        $binary = $this->downscaleImageBinary($binary, $mimeType, 1024);
+        $mimeType = $this->detectMimeType($binary);
         $extension = $this->guessExtensionFromMimeType($mimeType);
         $relativePath = sprintf('uploads/try-on/customer/%s.%s', $jobId, $extension);
 
@@ -97,6 +99,55 @@ final readonly class TryOnImageStorage
         $mimeType = $finfo->buffer($binary);
 
         return is_string($mimeType) && str_starts_with($mimeType, 'image/') ? $mimeType : 'image/png';
+    }
+
+    private function downscaleImageBinary(string $binary, string $mimeType, int $maxDimension): string
+    {
+        if (!function_exists('imagecreatetruecolor')) {
+            return $binary;
+        }
+
+        $source = @imagecreatefromstring($binary);
+
+        if (false === $source) {
+            return $binary;
+        }
+
+        $width = imagesx($source);
+        $height = imagesy($source);
+        $largestSide = max($width, $height);
+
+        if ($largestSide <= $maxDimension) {
+            imagedestroy($source);
+
+            return $binary;
+        }
+
+        $scale = $maxDimension / $largestSide;
+        $targetWidth = max(1, (int) round($width * $scale));
+        $targetHeight = max(1, (int) round($height * $scale));
+        $target = imagecreatetruecolor($targetWidth, $targetHeight);
+
+        if ('image/png' === $mimeType || 'image/webp' === $mimeType) {
+            imagealphablending($target, false);
+            imagesavealpha($target, true);
+        }
+
+        imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
+
+        ob_start();
+
+        match ($mimeType) {
+            'image/png' => imagepng($target, null, 6),
+            'image/webp' => imagewebp($target, null, 82),
+            default => imagejpeg($target, null, 82),
+        };
+
+        $resizedBinary = ob_get_clean();
+        imagedestroy($source);
+        imagedestroy($target);
+
+        return is_string($resizedBinary) && '' !== $resizedBinary ? $resizedBinary : $binary;
     }
 
     private function guessExtensionFromMimeType(string $mimeType): string
