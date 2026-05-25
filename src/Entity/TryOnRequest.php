@@ -62,6 +62,9 @@ class TryOnRequest
     #[ORM\Column]
     private bool $customerImageProvided = false;
 
+    #[ORM\Column(length: 2048, nullable: true)]
+    private ?string $customerImagePath = null;
+
     #[ORM\Column(nullable: true)]
     private ?int $requestedAnonymousDailyQuota = null;
 
@@ -76,6 +79,12 @@ class TryOnRequest
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $errorMessage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $providerRequestId = null;
+
+    #[ORM\Column(length: 2048, nullable: true)]
+    private ?string $generatedImagePath = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $completedAt = null;
@@ -223,6 +232,18 @@ class TryOnRequest
         return $this;
     }
 
+    public function getCustomerImagePath(): ?string
+    {
+        return $this->customerImagePath;
+    }
+
+    public function setCustomerImagePath(?string $customerImagePath): static
+    {
+        $this->customerImagePath = $customerImagePath;
+
+        return $this;
+    }
+
     public function getRequestedAnonymousDailyQuota(): ?int
     {
         return $this->requestedAnonymousDailyQuota;
@@ -279,6 +300,30 @@ class TryOnRequest
     public function setErrorMessage(?string $errorMessage): static
     {
         $this->errorMessage = $errorMessage;
+
+        return $this;
+    }
+
+    public function getProviderRequestId(): ?string
+    {
+        return $this->providerRequestId;
+    }
+
+    public function setProviderRequestId(?string $providerRequestId): static
+    {
+        $this->providerRequestId = $providerRequestId;
+
+        return $this;
+    }
+
+    public function getGeneratedImagePath(): ?string
+    {
+        return $this->generatedImagePath;
+    }
+
+    public function setGeneratedImagePath(?string $generatedImagePath): static
+    {
+        $this->generatedImagePath = $generatedImagePath;
 
         return $this;
     }
