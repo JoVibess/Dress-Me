@@ -15,4 +15,15 @@ class TryOnRequestRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TryOnRequest::class);
     }
+
+    public function findOneByJobIdAndStore(string $jobId, int $storeId): ?TryOnRequest
+    {
+        return $this->createQueryBuilder('try_on_request')
+            ->andWhere('try_on_request.jobId = :jobId')
+            ->andWhere('IDENTITY(try_on_request.store) = :storeId')
+            ->setParameter('jobId', $jobId)
+            ->setParameter('storeId', $storeId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
