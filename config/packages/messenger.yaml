@@ -26,3 +26,4 @@ framework:
             # 'App\Message\YourMessage': async
             App\Message\CustomerSupportContactMessage: async
             App\Message\BusinessPartnershipContactMessage: async
+            App\Message\ProcessTryOnRequestMessage: async
