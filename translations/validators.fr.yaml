@@ -1,0 +1,4 @@
+validator:
+  password_required: "Veuillez saisir un mot de passe."
+  password_too_short: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+  agree_terms_required: "Vous devez accepter les conditions pour créer un compte."

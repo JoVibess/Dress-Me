@@ -38,7 +38,7 @@ final class AuthController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
             } catch (UniqueConstraintViolationException) {
-                $error = 'An account already exists for this email or website.';
+                $error = 'flash.auth.account_exists';
             }
 
             if (null === $error) {

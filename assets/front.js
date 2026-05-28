@@ -16,3 +16,5 @@ import './js/cart-offcanvas.js';
 import './js/checkout-cart.js';
 import './js/subscription-switcher.js';
 import './js/contact-form-switcher.js';
+import './js/home-showcase-carousel.js';
+import './js/viewport-reveal.js';

@@ -1,5 +1,7 @@
 import { formatPrice, getCartCount, getCartItemMeta, getCartTotal, readCart, writeCart } from './cart-store.js';
 
+const getLocale = () => (document.documentElement.lang || 'en').toLowerCase();
+
 const buildCheckoutItem = (item) => {
     const template = document.querySelector('[data-checkout-item-template]');
 
@@ -45,7 +47,7 @@ const renderCheckout = () => {
     summary.hidden = !hasItems;
     subtotal.textContent = formatPrice(getCartTotal(items));
     total.textContent = formatPrice(getCartTotal(items));
-    count.textContent = String(getCartCount(items));
+    count.textContent = new Intl.NumberFormat(getLocale().startsWith('fr') ? 'fr-FR' : 'en-GB').format(getCartCount(items));
     orderButton.disabled = !hasItems;
 };
 

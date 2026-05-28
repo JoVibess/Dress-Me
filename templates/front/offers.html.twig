@@ -1,30 +1,29 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Offers{% endblock %}
+{% block page_title %}{{ 'offers.title'|trans }}{% endblock %}
 
 {% block front_body %}
     <section class="offers-hero text-center mx-auto">
-        <p class="eyebrow">DressMe pricing</p>
-        <h1>Choose the credit plan that fits your store.</h1>
+        <p class="eyebrow">{{ 'offers.eyebrow'|trans }}</p>
+        <h1>{{ 'offers.heading'|trans }}</h1>
         <p>
-            Subscriptions are made for recurring virtual try-on usage.
-            One-time packs are useful when you need extra credits for a campaign or a product launch.
+            {{ 'offers.intro'|trans }}
         </p>
     </section>
 
     <section class="offers-section">
         <div class="offers-section__header d-flex align-items-end justify-content-between gap-3 mb-4">
             <div>
-                <p class="offers-section__kicker mb-1">Recurring credits</p>
-                <h2 class="mb-0">Subscriptions</h2>
+                <p class="offers-section__kicker mb-1">{{ 'offers.recurring_credits'|trans }}</p>
+                <h2 class="mb-0">{{ 'offers.subscriptions'|trans }}</h2>
             </div>
 
-            <div class="billing-switch" data-subscription-switcher role="group" aria-label="Subscription billing period">
+            <div class="billing-switch" data-subscription-switcher role="group" aria-label="{{ 'offers.billing_period'|trans }}">
                 <button class="billing-switch__button is-active" type="button" data-billing-filter="monthly" aria-pressed="true">
-                    Monthly
+                    {{ 'offers.monthly'|trans }}
                 </button>
                 <button class="billing-switch__button" type="button" data-billing-filter="annual" aria-pressed="false">
-                    Annually
+                    {{ 'offers.annually'|trans }}
                 </button>
             </div>
         </div>
@@ -36,7 +35,7 @@
                 <div class="col-12 col-md-6 col-xl-4" data-billing-period="{{ billing_period }}" {% if billing_period != 'monthly' %}hidden{% endif %}>
                     <article class="offer-card h-100">
                         <div>
-                            <span class="offer-card__badge">{{ billing_period == 'annual' ? 'Annual subscription' : 'Subscription' }}</span>
+                            <span class="offer-card__badge">{{ billing_period == 'annual' ? 'offers.annual_subscription'|trans : 'offers.subscription'|trans }}</span>
                             <h3>{{ offer.name }}</h3>
                             <p class="offer-card__description">{{ offer.description }}</p>
                         </div>
@@ -44,7 +43,7 @@
                         <div class="offer-card__details">
                             <p class="offer-price">{{ offer.price|number_format(2, '.', ' ') }} €</p>
                             <p class="offer-card__credits">
-                                {{ offer.creditAmount }} credits / {{ offer.durationInMonths }} {{ offer.durationInMonths > 1 ? 'months' : 'month' }}
+                                {{ offer.creditAmount }} credits / {{ offer.durationInMonths }} {{ offer.durationInMonths > 1 ? 'common.months'|trans : 'common.month'|trans }}
                             </p>
                         </div>
 
@@ -58,13 +57,13 @@
                             data-offer-credits="{{ offer.creditAmount }}"
                             data-offer-duration="{{ offer.durationInMonths }}"
                         >
-                            Add to cart
+                            {{ 'offers.add_to_cart'|trans }}
                         </button>
                     </article>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <p>No subscription offer is available yet.</p>
+                    <p>{{ 'offers.no_subscription'|trans }}</p>
                 </div>
             {% endfor %}
         </div>
@@ -73,8 +72,8 @@
     <section class="offers-section">
         <div class="d-flex align-items-end justify-content-between gap-3 mb-4">
             <div>
-                <p class="offers-section__kicker mb-1">Flexible packs</p>
-                <h2 class="mb-0">One-time credit packs</h2>
+                <p class="offers-section__kicker mb-1">{{ 'offers.flexible_packs'|trans }}</p>
+                <h2 class="mb-0">{{ 'offers.one_time_packs'|trans }}</h2>
             </div>
         </div>
 
@@ -83,7 +82,7 @@
                 <div class="col-12 col-md-6 col-xl-4">
                     <article class="offer-card h-100">
                         <div>
-                            <span class="offer-card__badge offer-card__badge--light">One-time</span>
+                            <span class="offer-card__badge offer-card__badge--light">{{ 'offers.one_time'|trans }}</span>
                             <h3>{{ offer.name }}</h3>
                             <p class="offer-card__description">{{ offer.description }}</p>
                         </div>
@@ -91,7 +90,7 @@
                         <div class="offer-card__details">
                             <p class="offer-price">
                                 {% if offer.price == '0.00' %}
-                                    Free
+                                    {{ 'common.free'|trans }}
                                 {% else %}
                                     {{ offer.price|number_format(2, '.', ' ') }} €
                                 {% endif %}
@@ -109,13 +108,13 @@
                             data-offer-credits="{{ offer.creditAmount }}"
                             data-offer-duration=""
                         >
-                            Add to cart
+                            {{ 'offers.add_to_cart'|trans }}
                         </button>
                     </article>
                 </div>
             {% else %}
                 <div class="col-12">
-                    <p>No one-time credit pack is available yet.</p>
+                    <p>{{ 'offers.no_one_time'|trans }}</p>
                 </div>
             {% endfor %}
         </div>

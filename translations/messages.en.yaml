@@ -1,0 +1,228 @@
+meta:
+  brand: "DressMe"
+
+common:
+  close: "Close"
+  remove: "Remove"
+  total: "Total"
+  free: "Free"
+  month: "month"
+  months: "months"
+
+form:
+  name: "Name"
+  email: "Email"
+  website: "Website"
+  password: "Password"
+  agree_terms: "I agree to the terms and privacy policy."
+  subject: "Subject"
+  message: "Message"
+  work_email: "Work email"
+  company: "Company"
+  partnership_goal: "Partnership goal"
+
+flash:
+  contact:
+    support_sent: "Your support request has been sent."
+    partnership_sent: "Your partnership request has been sent."
+  auth:
+    account_exists: "An account already exists for this email or website."
+
+header:
+  logo_aria: "DressMe home"
+  toggle_navigation: "Toggle navigation"
+  main_navigation: "Main navigation"
+  language_switch: "Language switch"
+  open_cart: "Open cart"
+  open_dashboard: "Open dashboard"
+  login: "Login"
+  logout: "Logout"
+  nav:
+    offers: "Offers"
+    features: "Features"
+    contact: "Contact"
+
+footer:
+  logo_aria: "DressMe home"
+  navigation: "Footer navigation"
+  socials: "Social links"
+  copyright: "2026 © Dress Me"
+  nav:
+    home: "Home"
+    offers: "Offers"
+    features: "Features"
+    contact: "Contact"
+
+cart:
+  drawer:
+    kicker: "Selected offers"
+    title: "Your cart"
+    empty: "Your cart is empty. Pick an offer to get started."
+    checkout: "View cart and checkout"
+  page:
+    title: "Cart"
+    eyebrow: "Cart"
+    heading: "Your offer selection lives in the side cart and checkout."
+    intro: "Use the cart drawer from the header to review your picks instantly, then continue to checkout when your selection is ready."
+    browse_offers: "Browse offers"
+    go_to_checkout: "Go to checkout"
+    quick_access:
+      title: "Quick access"
+      body: "Open the top-right cart drawer from any front page to add, remove or inspect selected offers in context."
+    ready_to_pay:
+      title: "Ready to pay"
+      body: "The checkout page summarizes your order and prepares the next payment step when your cart is complete."
+
+checkout:
+  title: "Checkout"
+  eyebrow: "Checkout"
+  heading: "Review your cart before payment."
+  intro: "Your selected DressMe offers are listed below. Stripe payment will be connected in the next step."
+  back_to_offers: "Back to offers"
+  cart_items: "Cart items"
+  selected_offers: "Selected offers"
+  items_suffix: "item(s)"
+  empty: "Your cart is empty. Add an offer before continuing to payment."
+  table:
+    offer: "Offer"
+    unit_price: "Unit price"
+    qty: "Qty"
+    subtotal: "Subtotal"
+    actions: "Actions"
+  summary:
+    kicker: "Order summary"
+    title: "Summary"
+    subtotal: "Subtotal"
+    payment_provider: "Payment provider"
+    place_order: "Place order"
+    note: "Stripe redirection will be plugged here later. For now, this button is intentionally inactive."
+
+contact:
+  title: "Contact"
+  eyebrow: "Contact DressMe"
+  heading: "Tell us what you need."
+  intro: "Choose the right form so your message lands in the right place. Support questions and business opportunities do not need the same context."
+  message_type: "Message type"
+  help_heading: "How can we help?"
+  form_type: "Contact form type"
+  customer_support: "Customer support"
+  business_partnership: "Business partnership"
+  send_support_request: "Send support request"
+  send_partnership_request: "Send partnership request"
+
+features:
+  title: "Features"
+  eyebrow: "DressMe features"
+  heading: "Everything your store needs to launch premium virtual try-on."
+  intro: "From WooCommerce integration to conversion insights, DressMe is designed to fit naturally into your ecommerce stack."
+  cards:
+    integration:
+      title: "WooCommerce-ready integration"
+      body: "Connect your catalog, sync product variants and activate the experience without rebuilding your product pages."
+    tryon:
+      title: "Fast virtual try-on flow"
+      body: "Give shoppers a fluid, reassuring experience that reduces hesitation and helps them project themselves before checkout."
+    credits:
+      title: "Centralized credit management"
+      body: "Track usage, manage subscriptions and keep budget visibility across all campaigns and product launches."
+    analytics:
+      title: "Performance-oriented analytics"
+      body: "Monitor adoption, identify winning products and iterate on the customer journey with concrete data."
+
+home:
+  title: "Home"
+  video:
+    placeholder_aria: "Video placeholder"
+  showcase:
+    eyebrow: "Virtual try-on"
+    heading: "Next-generation virtual try-on"
+    intro: "Our plugin makes virtual try-on simple, fast and more realistic than ever. A generation volume tailored to your needs through subscription or credits."
+    primary_cta: "Try it"
+    secondary_cta: "Install it on my site"
+    cards:
+      studio: "Studio try-on"
+      lookbook: "Lookbook"
+      catalog: "Catalog"
+      campaign: "Campaign"
+      drop: "Product drop"
+      ecommerce: "E-commerce"
+  how:
+    eyebrow: "Experience"
+    heading: "How it works"
+    intro: "A simple flow to connect your store, launch virtual try-ons and monitor your conversions from a clear interface."
+    cta: "See all features"
+    steps:
+      configuration:
+        pill: "Configuration"
+        title: "Connect your WooCommerce store"
+        body: "Plug DressMe in within minutes to sync your products, variants and catalog without technical friction."
+        footer: "Fast API connection"
+      tryon:
+        pill: "Try-on"
+        title: "Activate virtual try-on on your product pages"
+        body: "Your customers instantly visualize items on their photos, with a premium experience designed to reassure before purchase."
+        footer: "Immersive and fluid experience"
+      management:
+        pill: "Management"
+        title: "Manage credits and your account in one place"
+        body: "Track your consumption, adjust your offers and keep control over your usage from a centralized dashboard."
+        footer: "Simple and transparent monitoring"
+      optimization:
+        pill: "Optimization"
+        title: "Analyze results to improve conversion"
+        body: "Identify the best-performing products, optimize your visuals and refine your journey to maximize business impact."
+        footer: "Data-driven decisions"
+  promises:
+    eyebrow: "Impact"
+    heading: "Our promises"
+    intro: "An experience designed to reassure your customers, speed up purchase decisions and improve your store’s commercial performance."
+    cards:
+      conversion:
+        title: "Higher conversion"
+        body: "Reduce hesitation at the moment of purchase by helping visitors better project themselves into the products."
+      returns:
+        title: "Fewer product returns"
+        body: "Provide a more realistic preview of the final result to limit disappointment after delivery and secure orders."
+      integration:
+        title: "Simple and fast integration"
+        body: "Connect your site in minutes, without redesigning the journey or overloading your teams technically."
+      premium:
+        title: "Premium customer experience"
+        body: "Enhance your brand image with a virtual try-on that feels fluid, modern and instantly understandable."
+
+login:
+  title: "Login"
+  eyebrow: "Welcome back"
+  heading: "Log in"
+  intro: "Access your dashboard, credits and DressMe plugin settings."
+  submit: "Log in"
+  no_account: "No account yet?"
+  create_one: "Create one"
+
+offers:
+  title: "Offers"
+  eyebrow: "DressMe pricing"
+  heading: "Choose the credit plan that fits your store."
+  intro: "Subscriptions are made for recurring virtual try-on usage. One-time packs are useful when you need extra credits for a campaign or a product launch."
+  recurring_credits: "Recurring credits"
+  subscriptions: "Subscriptions"
+  billing_period: "Subscription billing period"
+  monthly: "Monthly"
+  annually: "Annually"
+  annual_subscription: "Annual subscription"
+  subscription: "Subscription"
+  add_to_cart: "Add to cart"
+  no_subscription: "No subscription offer is available yet."
+  flexible_packs: "Flexible packs"
+  one_time_packs: "One-time credit packs"
+  one_time: "One-time"
+  no_one_time: "No one-time credit pack is available yet."
+
+register:
+  title: "Sign up"
+  eyebrow: "Start building"
+  heading: "Create an account"
+  intro: "Create your DressMe workspace and connect your WooCommerce store later."
+  submit: "Create account"
+  already_registered: "Already registered?"
+  log_in: "Log in"

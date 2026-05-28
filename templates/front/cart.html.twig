@@ -1,7 +1,30 @@
 {% extends 'front/base.html.twig' %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}{{ 'cart.page.title'|trans }}{% endblock %}
 
 {% block front_body %}
-    <h1>Cart</h1>
+    <section class="cart-page mx-auto text-center">
+        <p class="eyebrow">{{ 'cart.page.eyebrow'|trans }}</p>
+        <h1>{{ 'cart.page.heading'|trans }}</h1>
+        <p class="cart-page__intro">
+            {{ 'cart.page.intro'|trans }}
+        </p>
+
+        <div class="cart-page__actions">
+            <a class="btn btn-dark rounded-pill px-4" href="{{ path('front_offers') }}">{{ 'cart.page.browse_offers'|trans }}</a>
+            <a class="btn btn-outline-dark rounded-pill px-4" href="{{ path('front_checkout') }}">{{ 'cart.page.go_to_checkout'|trans }}</a>
+        </div>
+
+        <div class="cart-page__panel">
+            <article class="cart-page__panel-card">
+                <h2>{{ 'cart.page.quick_access.title'|trans }}</h2>
+                <p>{{ 'cart.page.quick_access.body'|trans }}</p>
+            </article>
+
+            <article class="cart-page__panel-card">
+                <h2>{{ 'cart.page.ready_to_pay.title'|trans }}</h2>
+                <p>{{ 'cart.page.ready_to_pay.body'|trans }}</p>
+            </article>
+        </div>
+    </section>
 {% endblock %}

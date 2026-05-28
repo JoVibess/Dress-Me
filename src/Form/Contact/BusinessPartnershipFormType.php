@@ -21,21 +21,21 @@ final class BusinessPartnershipFormType extends AbstractType
                 'data' => 'business_partnership',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Name',
+                'label' => 'form.name',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Work email',
+                'label' => 'form.work_email',
             ])
             ->add('company', TextType::class, [
-                'label' => 'Company',
+                'label' => 'form.company',
             ])
             ->add('website', UrlType::class, [
-                'label' => 'Website',
+                'label' => 'form.website',
                 'required' => false,
                 'default_protocol' => 'https',
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'Partnership goal',
+                'label' => 'form.partnership_goal',
             ])
         ;
     }

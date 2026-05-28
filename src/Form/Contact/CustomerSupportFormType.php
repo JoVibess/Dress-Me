@@ -20,16 +20,16 @@ final class CustomerSupportFormType extends AbstractType
                 'data' => 'customer_support',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Name',
+                'label' => 'form.name',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'form.email',
             ])
             ->add('subject', TextType::class, [
-                'label' => 'Subject',
+                'label' => 'form.subject',
             ])
             ->add('message', TextareaType::class, [
-                'label' => 'Message',
+                'label' => 'form.message',
             ])
         ;
     }

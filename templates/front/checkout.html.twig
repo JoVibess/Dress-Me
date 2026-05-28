@@ -1,45 +1,45 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Checkout{% endblock %}
+{% block page_title %}{{ 'checkout.title'|trans }}{% endblock %}
 
 {% block front_body %}
     <section class="checkout-hero text-center mx-auto">
-        <p class="eyebrow">Checkout</p>
-        <h1>Review your cart before payment.</h1>
+        <p class="eyebrow">{{ 'checkout.eyebrow'|trans }}</p>
+        <h1>{{ 'checkout.heading'|trans }}</h1>
         <p>
-            Your selected DressMe offers are listed below. Stripe payment will be connected in the next step.
+            {{ 'checkout.intro'|trans }}
         </p>
     </section>
 
     <section class="checkout-layout">
         <div class="checkout-main">
-            <a class="btn btn-outline-dark rounded-pill px-4 checkout-back-link" href="{{ path('front_offers') }}">Back to offers</a>
+            <a class="btn btn-outline-dark rounded-pill px-4 checkout-back-link" href="{{ path('front_offers') }}">{{ 'checkout.back_to_offers'|trans }}</a>
 
             <div class="checkout-panel">
                 <div class="checkout-panel__header">
                     <div>
-                        <p class="offers-section__kicker mb-1">Cart items</p>
-                        <h2 class="mb-0">Selected offers</h2>
+                        <p class="offers-section__kicker mb-1">{{ 'checkout.cart_items'|trans }}</p>
+                        <h2 class="mb-0">{{ 'checkout.selected_offers'|trans }}</h2>
                     </div>
                     <span class="checkout-panel__count">
-                        <span data-checkout-count>0</span> item(s)
+                        <span data-checkout-count>0</span> {{ 'checkout.items_suffix'|trans }}
                     </span>
                 </div>
 
                 <p class="checkout-empty" data-checkout-empty>
-                    Your cart is empty. Add an offer before continuing to payment.
-                    <a href="{{ path('front_offers') }}">Back to offers</a>
+                    {{ 'checkout.empty'|trans }}
+                    <a href="{{ path('front_offers') }}">{{ 'checkout.back_to_offers'|trans }}</a>
                 </p>
 
                 <div class="checkout-table-wrap">
                     <table class="checkout-table">
                         <thead>
                             <tr>
-                                <th scope="col">Offer</th>
-                                <th scope="col">Unit price</th>
-                                <th scope="col">Qty</th>
-                                <th scope="col">Subtotal</th>
-                                <th scope="col"><span class="visually-hidden">Actions</span></th>
+                                <th scope="col">{{ 'checkout.table.offer'|trans }}</th>
+                                <th scope="col">{{ 'checkout.table.unit_price'|trans }}</th>
+                                <th scope="col">{{ 'checkout.table.qty'|trans }}</th>
+                                <th scope="col">{{ 'checkout.table.subtotal'|trans }}</th>
+                                <th scope="col"><span class="visually-hidden">{{ 'checkout.table.actions'|trans }}</span></th>
                             </tr>
                         </thead>
                         <tbody data-checkout-list></tbody>
@@ -56,7 +56,7 @@
                         <td data-checkout-item-quantity></td>
                         <td><strong data-checkout-item-subtotal></strong></td>
                         <td>
-                            <button type="button" data-checkout-remove>Remove</button>
+                            <button type="button" data-checkout-remove>{{ 'common.remove'|trans }}</button>
                         </td>
                     </tr>
                 </template>
@@ -65,30 +65,30 @@
         </div>
 
         <aside class="checkout-summary" data-checkout-summary hidden>
-            <p class="offers-section__kicker mb-1">Order summary</p>
-            <h2>Summary</h2>
+            <p class="offers-section__kicker mb-1">{{ 'checkout.summary.kicker'|trans }}</p>
+            <h2>{{ 'checkout.summary.title'|trans }}</h2>
 
             <div class="checkout-summary__row">
-                <span>Subtotal</span>
+                <span>{{ 'checkout.summary.subtotal'|trans }}</span>
                 <strong data-checkout-subtotal>0,00 €</strong>
             </div>
 
             <div class="checkout-summary__row">
-                <span>Payment provider</span>
+                <span>{{ 'checkout.summary.payment_provider'|trans }}</span>
                 <span>Stripe</span>
             </div>
 
             <div class="checkout-summary__total">
-                <span>Total</span>
+                <span>{{ 'common.total'|trans }}</span>
                 <strong data-checkout-total>0,00 €</strong>
             </div>
 
             <button class="btn btn-dark rounded-pill w-100 checkout-summary__button" type="button" data-checkout-order disabled>
-                Place order
+                {{ 'checkout.summary.place_order'|trans }}
             </button>
 
             <p class="checkout-summary__note">
-                Stripe redirection will be plugged here later. For now, this button is intentionally inactive.
+                {{ 'checkout.summary.note'|trans }}
             </p>
         </aside>
     </section>

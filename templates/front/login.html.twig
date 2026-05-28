@@ -1,18 +1,18 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Login{% endblock %}
+{% block page_title %}{{ 'login.title'|trans }}{% endblock %}
 
 {% block front_header %}{% endblock %}
 
 {% block front_body %}
     <section class="auth-shell">
         <div class="auth-card">
-            <a class="auth-card__brand" href="{{ path('front_home') }}">DressMe</a>
+            <a class="auth-card__brand" href="{{ path('front_home') }}">{{ 'meta.brand'|trans }}</a>
 
             <div class="auth-card__header">
-                <p class="eyebrow">Welcome back</p>
-                <h1>Log in</h1>
-                <p>Access your dashboard, credits and DressMe plugin settings.</p>
+                <p class="eyebrow">{{ 'login.eyebrow'|trans }}</p>
+                <h1>{{ 'login.heading'|trans }}</h1>
+                <p>{{ 'login.intro'|trans }}</p>
             </div>
 
             {% if error %}
@@ -23,21 +23,21 @@
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <div>
-                    <label class="auth-form__label" for="email">Email</label>
+                    <label class="auth-form__label" for="email">{{ 'form.email'|trans }}</label>
                     <input class="form-control auth-form__control" id="email" type="email" name="email" value="{{ last_username }}" autocomplete="email" required autofocus>
                 </div>
 
                 <div>
-                    <label class="auth-form__label" for="password">Password</label>
+                    <label class="auth-form__label" for="password">{{ 'form.password'|trans }}</label>
                     <input class="form-control auth-form__control" id="password" type="password" name="password" autocomplete="current-password" required>
                 </div>
 
-                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">Log in</button>
+                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">{{ 'login.submit'|trans }}</button>
             </form>
 
             <p class="auth-card__footer">
-                No account yet?
-                <a href="{{ path('app_signup') }}">Create one</a>
+                {{ 'login.no_account'|trans }}
+                <a href="{{ path('app_signup') }}">{{ 'login.create_one'|trans }}</a>
             </p>
         </div>
     </section>

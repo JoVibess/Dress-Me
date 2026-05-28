@@ -1,7 +1,39 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Features{% endblock %}
+{% block page_title %}{{ 'features.title'|trans }}{% endblock %}
 
 {% block front_body %}
-    <h1>Features</h1>
+    <section class="feature-showcase text-center mx-auto">
+        <p class="eyebrow">{{ 'features.eyebrow'|trans }}</p>
+        <h1>{{ 'features.heading'|trans }}</h1>
+        <p>
+            {{ 'features.intro'|trans }}
+        </p>
+    </section>
+
+    <section class="feature-grid">
+        <article class="feature-card">
+            <span class="feature-card__kicker">01</span>
+            <h2>{{ 'features.cards.integration.title'|trans }}</h2>
+            <p>{{ 'features.cards.integration.body'|trans }}</p>
+        </article>
+
+        <article class="feature-card">
+            <span class="feature-card__kicker">02</span>
+            <h2>{{ 'features.cards.tryon.title'|trans }}</h2>
+            <p>{{ 'features.cards.tryon.body'|trans }}</p>
+        </article>
+
+        <article class="feature-card">
+            <span class="feature-card__kicker">03</span>
+            <h2>{{ 'features.cards.credits.title'|trans }}</h2>
+            <p>{{ 'features.cards.credits.body'|trans }}</p>
+        </article>
+
+        <article class="feature-card">
+            <span class="feature-card__kicker">04</span>
+            <h2>{{ 'features.cards.analytics.title'|trans }}</h2>
+            <p>{{ 'features.cards.analytics.body'|trans }}</p>
+        </article>
+    </section>
 {% endblock %}

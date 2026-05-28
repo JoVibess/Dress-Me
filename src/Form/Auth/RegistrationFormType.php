@@ -21,32 +21,32 @@ final class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Name',
+                'label' => 'form.name',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'form.email',
             ])
             ->add('website', UrlType::class, [
-                'label' => 'Website',
+                'label' => 'form.website',
                 'default_protocol' => 'https',
             ])
             ->add('plainPassword', PasswordType::class, [
-                'label' => 'Password',
+                'label' => 'form.password',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank(message: 'Please enter a password.'),
+                    new NotBlank(message: 'validator.password_required'),
                     new Length(
                         min: 8,
-                        minMessage: 'Your password should be at least {{ limit }} characters.',
+                        minMessage: 'validator.password_too_short',
                         max: 4096,
                     ),
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'I agree to the terms and privacy policy.',
+                'label' => 'form.agree_terms',
                 'mapped' => false,
                 'constraints' => [
-                    new IsTrue(message: 'You must accept the terms to create an account.'),
+                    new IsTrue(message: 'validator.agree_terms_required'),
                 ],
             ])
         ;

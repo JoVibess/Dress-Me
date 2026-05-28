@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale|default('en') }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,7 +11,7 @@
             {% block importmap %}{{ importmap('front') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body class="{% block body_class %}{% endblock %}">
         {% block body %}{% endblock %}
     </body>
 </html>

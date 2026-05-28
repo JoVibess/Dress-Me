@@ -1,34 +1,33 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Contact{% endblock %}
+{% block page_title %}{{ 'contact.title'|trans }}{% endblock %}
 
 {% block front_body %}
     <section class="contact-hero text-center mx-auto">
-        <p class="eyebrow">Contact DressMe</p>
-        <h1>Tell us what you need.</h1>
+        <p class="eyebrow">{{ 'contact.eyebrow'|trans }}</p>
+        <h1>{{ 'contact.heading'|trans }}</h1>
         <p>
-            Choose the right form so your message lands in the right place.
-            Support questions and business opportunities do not need the same context.
+            {{ 'contact.intro'|trans }}
         </p>
     </section>
 
     <section class="contact-panel mx-auto">
         {% for message in app.flashes('success') %}
-            <p class="form-success">{{ message }}</p>
+            <p class="form-success">{{ message|trans }}</p>
         {% endfor %}
 
         <div class="contact-panel__header">
             <div>
-                <p class="offers-section__kicker mb-1">Message type</p>
-                <h2 class="mb-0">How can we help?</h2>
+                <p class="offers-section__kicker mb-1">{{ 'contact.message_type'|trans }}</p>
+                <h2 class="mb-0">{{ 'contact.help_heading'|trans }}</h2>
             </div>
 
-            <div class="billing-switch" data-contact-switcher role="group" aria-label="Contact form type">
+            <div class="billing-switch" data-contact-switcher role="group" aria-label="{{ 'contact.form_type'|trans }}">
                 <button class="billing-switch__button {{ active_contact_form == 'support' ? 'is-active' }}" type="button" data-contact-form-target="support" aria-pressed="{{ active_contact_form == 'support' ? 'true' : 'false' }}">
-                    Customer support
+                    {{ 'contact.customer_support'|trans }}
                 </button>
                 <button class="billing-switch__button {{ active_contact_form == 'partnership' ? 'is-active' }}" type="button" data-contact-form-target="partnership" aria-pressed="{{ active_contact_form == 'partnership' ? 'true' : 'false' }}">
-                    Business partnership
+                    {{ 'contact.business_partnership'|trans }}
                 </button>
             </div>
         </div>
@@ -62,7 +61,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">Send support request</button>
+            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">{{ 'contact.send_support_request'|trans }}</button>
         {{ form_end(customer_support_form) }}
 
         {{ form_start(business_partnership_form, { action: path('front_contact'), attr: { class: 'contact-form', 'data-contact-form': 'partnership', hidden: active_contact_form != 'partnership' } }) }}
@@ -100,7 +99,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">Send partnership request</button>
+            <button class="btn btn-dark rounded-pill px-4 mt-4" type="submit">{{ 'contact.send_partnership_request'|trans }}</button>
         {{ form_end(business_partnership_form) }}
     </section>
 {% endblock %}

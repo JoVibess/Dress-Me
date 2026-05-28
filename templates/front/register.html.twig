@@ -1,22 +1,22 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Sign up{% endblock %}
+{% block page_title %}{{ 'register.title'|trans }}{% endblock %}
 
 {% block front_header %}{% endblock %}
 
 {% block front_body %}
     <section class="auth-shell">
         <div class="auth-card auth-card--wide">
-            <a class="auth-card__brand" href="{{ path('front_home') }}">DressMe</a>
+            <a class="auth-card__brand" href="{{ path('front_home') }}">{{ 'meta.brand'|trans }}</a>
 
             <div class="auth-card__header">
-                <p class="eyebrow">Start building</p>
-                <h1>Create an account</h1>
-                <p>Create your DressMe workspace and connect your WooCommerce store later.</p>
+                <p class="eyebrow">{{ 'register.eyebrow'|trans }}</p>
+                <h1>{{ 'register.heading'|trans }}</h1>
+                <p>{{ 'register.intro'|trans }}</p>
             </div>
 
             {% if error %}
-                <p class="form-error">{{ error }}</p>
+                <p class="form-error">{{ error|trans }}</p>
             {% endif %}
 
             {{ form_start(registration_form, { attr: { class: 'auth-form' } }) }}
@@ -54,12 +54,12 @@
                     </div>
                 </div>
 
-                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">Create account</button>
+                <button class="btn btn-dark rounded-pill w-100 auth-form__submit" type="submit">{{ 'register.submit'|trans }}</button>
             {{ form_end(registration_form) }}
 
             <p class="auth-card__footer">
-                Already registered?
-                <a href="{{ path('app_login') }}">Log in</a>
+                {{ 'register.already_registered'|trans }}
+                <a href="{{ path('app_login') }}">{{ 'register.log_in'|trans }}</a>
             </p>
         </div>
     </section>

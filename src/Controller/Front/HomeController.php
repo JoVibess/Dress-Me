@@ -49,7 +49,7 @@ final class HomeController extends AbstractController
                 (string) $customerSupportRequest->message,
             ));
 
-            $this->addFlash('success', 'Your support request has been sent.');
+            $this->addFlash('success', 'flash.contact.support_sent');
 
             return $this->redirectToRoute('front_contact');
         }
@@ -63,7 +63,7 @@ final class HomeController extends AbstractController
                 (string) $businessPartnershipRequest->message,
             ));
 
-            $this->addFlash('success', 'Your partnership request has been sent.');
+            $this->addFlash('success', 'flash.contact.partnership_sent');
 
             return $this->redirectToRoute('front_contact');
         }

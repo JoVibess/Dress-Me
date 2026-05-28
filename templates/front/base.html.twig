@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% block page_title %}DressMe{% endblock %}{% endblock %}
+{% block title %}{% block page_title %}{{ 'meta.brand'|trans }}{% endblock %}{% endblock %}
 
 {% block body %}
     {% set current_route = app.request.attributes.get('_route') %}
@@ -8,7 +8,12 @@
     {% block front_header %}
     <header class="front-header navbar navbar-expand-lg navbar-light">
         <div class="container front-header__inner">
-            <a class="navbar-brand front-header__logo" href="{{ path('front_home') }}">DressMe</a>
+            {% set current_locale = app.request.locale|default('en') %}
+            {% set locale_redirect = app.request.uri %}
+
+            <a class="navbar-brand front-header__logo" href="{{ path('front_home') }}" aria-label="{{ 'header.logo_aria'|trans }}">
+                <img src="{{ asset('images/logo-light.png') }}" alt="{{ 'meta.brand'|trans }}">
+            </a>
 
             <button
                 class="navbar-toggler"
@@ -17,47 +22,53 @@
                 data-bs-target="#frontNavbar"
                 aria-controls="frontNavbar"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
+                aria-label="{{ 'header.toggle_navigation'|trans }}"
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <nav id="frontNavbar" class="collapse navbar-collapse front-header__collapse" aria-label="Main navigation">
+            <nav id="frontNavbar" class="collapse navbar-collapse front-header__collapse" aria-label="{{ 'header.main_navigation'|trans }}">
                 <div class="navbar-nav front-header__nav mx-lg-auto align-items-lg-center">
                     <a class="nav-link px-lg-2 {{ current_route == 'front_offers' ? 'is-active' }}" href="{{ path('front_offers') }}" {{ current_route == 'front_offers' ? 'aria-current="page"' }}>
-                        Offers
+                        {{ 'header.nav.offers'|trans }}
                     </a>
                     <a class="nav-link px-lg-2 {{ current_route == 'front_features' ? 'is-active' }}" href="{{ path('front_features') }}" {{ current_route == 'front_features' ? 'aria-current="page"' }}>
-                        Features
+                        {{ 'header.nav.features'|trans }}
                     </a>
                     <a class="nav-link px-lg-2 {{ current_route == 'front_contact' ? 'is-active' }}" href="{{ path('front_contact') }}" {{ current_route == 'front_contact' ? 'aria-current="page"' }}>
-                        Contact
+                        {{ 'header.nav.contact'|trans }}
                     </a>
                 </div>
 
                 <div class="front-header__actions ms-lg-auto">
+                    <div class="front-header__locale-switch" aria-label="{{ 'header.language_switch'|trans }}">
+                        <a class="front-header__locale-link {{ current_locale == 'fr' ? 'is-active' }}" href="{{ path('app_switch_locale', { locale: 'fr', redirect: locale_redirect }) }}">FR</a>
+                        <span>/</span>
+                        <a class="front-header__locale-link {{ current_locale == 'en' ? 'is-active' }}" href="{{ path('app_switch_locale', { locale: 'en', redirect: locale_redirect }) }}">EN</a>
+                    </div>
+
                     <button
                         class="front-header__cart"
                         type="button"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#cartOffcanvas"
                         aria-controls="cartOffcanvas"
-                        aria-label="Open cart"
+                        aria-label="{{ 'header.open_cart'|trans }}"
                     >
                         <img src="{{ asset('images/cart.svg') }}" alt="" width="20" height="21">
                         <span class="front-header__cart-count" data-cart-count>0</span>
                     </button>
 
                     {% if app.user %}
-                        <a class="front-header__icon-link" href="{{ path('middle_dashboard') }}" aria-label="Open dashboard">
+                        <a class="front-header__icon-link" href="{{ path('middle_dashboard') }}" aria-label="{{ 'header.open_dashboard'|trans }}">
                             <img src="{{ asset('images/user.svg') }}" alt="" width="20" height="20">
                         </a>
 
                         <form class="m-0" method="post" action="{{ path('app_logout') }}">
-                            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" type="submit">Logout</button>
+                            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" type="submit">{{ 'header.logout'|trans }}</button>
                         </form>
                     {% else %}
-                        <a class="btn btn-dark btn-sm rounded-pill px-3" href="{{ path('app_login') }}">Login</a>
+                        <a class="btn btn-dark btn-sm rounded-pill px-3" href="{{ path('app_login') }}">{{ 'header.login'|trans }}</a>
                     {% endif %}
                 </div>
             </nav>
@@ -69,6 +80,29 @@
         {% block front_body %}{% endblock %}
     </main>
 
+    <footer class="front-footer">
+        <div class="container front-footer__inner">
+            <a class="front-footer__brand" href="{{ path('front_home') }}" aria-label="{{ 'footer.logo_aria'|trans }}">
+                <img src="{{ asset('images/logo-dark.png') }}" alt="{{ 'meta.brand'|trans }}">
+            </a>
+
+            <nav class="front-footer__nav" aria-label="{{ 'footer.navigation'|trans }}">
+                <a href="{{ path('front_home') }}">{{ 'footer.nav.home'|trans }}</a>
+                <a href="{{ path('front_offers') }}">{{ 'footer.nav.offers'|trans }}</a>
+                <a href="{{ path('front_features') }}">{{ 'footer.nav.features'|trans }}</a>
+                <a href="{{ path('front_contact') }}">{{ 'footer.nav.contact'|trans }}</a>
+            </nav>
+
+            <div class="front-footer__socials" aria-label="{{ 'footer.socials'|trans }}">
+                <a href="#" aria-label="Instagram">Instagram</a>
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="X">X</a>
+            </div>
+
+            <p class="front-footer__copyright">{{ 'footer.copyright'|trans }}</p>
+        </div>
+    </footer>
+
     <aside
         class="offcanvas offcanvas-end cart-offcanvas"
         tabindex="-1"
@@ -77,14 +111,14 @@
     >
         <div class="offcanvas-header cart-offcanvas__header">
             <div>
-                <p class="eyebrow mb-1">Selected offers</p>
-                <h2 class="offcanvas-title" id="cartOffcanvasLabel">Your cart</h2>
+                <p class="eyebrow mb-1">{{ 'cart.drawer.kicker'|trans }}</p>
+                <h2 class="offcanvas-title" id="cartOffcanvasLabel">{{ 'cart.drawer.title'|trans }}</h2>
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{{ 'common.close'|trans }}"></button>
         </div>
 
         <div class="offcanvas-body cart-offcanvas__body">
-            <p class="cart-offcanvas__empty" data-cart-empty>Your cart is empty. Pick an offer to get started.</p>
+            <p class="cart-offcanvas__empty" data-cart-empty>{{ 'cart.drawer.empty'|trans }}</p>
 
             <div class="cart-offcanvas__list" data-cart-list></div>
 
@@ -93,7 +127,7 @@
                     <div>
                         <h3 data-cart-item-name></h3>
                         <p data-cart-item-meta></p>
-                        <button type="button" data-cart-remove>Remove</button>
+                        <button type="button" data-cart-remove>{{ 'common.remove'|trans }}</button>
                     </div>
                     <div class="cart-offcanvas__item-price">
                         <strong data-cart-item-price></strong>
@@ -105,11 +139,11 @@
 
         <div class="cart-offcanvas__footer">
             <div class="cart-offcanvas__total">
-                <span>Total</span>
+                <span>{{ 'common.total'|trans }}</span>
                 <strong data-cart-total>0,00 €</strong>
             </div>
             <a class="btn btn-dark rounded-pill w-100" href="{{ path('front_checkout') }}" data-cart-checkout>
-                View cart and checkout
+                {{ 'cart.drawer.checkout'|trans }}
             </a>
         </div>
     </aside>

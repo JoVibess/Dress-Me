@@ -2,6 +2,10 @@ export const CART_UPDATED_EVENT = 'dressme:cart-updated';
 
 const STORAGE_KEY = 'dressme_cart_offers';
 
+const getLocale = () => (document.documentElement.lang || 'en').toLowerCase();
+
+const translate = (messages) => messages[getLocale().startsWith('fr') ? 'fr' : 'en'];
+
 export const readCart = () => {
     try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
@@ -19,10 +23,13 @@ export const formatPrice = (price) => {
     const amount = Number(price);
 
     if (amount === 0) {
-        return 'Free';
+        return translate({
+            fr: 'Gratuit',
+            en: 'Free',
+        });
     }
 
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat(getLocale().startsWith('fr') ? 'fr-FR' : 'en-GB', {
         style: 'currency',
         currency: 'EUR',
     }).format(amount);
@@ -33,5 +40,8 @@ export const getCartTotal = (items) => items.reduce((total, item) => total + Num
 export const getCartCount = (items) => items.reduce((quantity, item) => quantity + item.quantity, 0);
 
 export const getCartItemMeta = (item) => item.duration
-    ? `${item.credits} credits / ${item.duration} month${Number(item.duration) > 1 ? 's' : ''}`
+    ? `${item.credits} credits / ${item.duration} ${translate({
+        fr: 'mois',
+        en: Number(item.duration) > 1 ? 'months' : 'month',
+    })}`
     : `${item.credits} credits`;

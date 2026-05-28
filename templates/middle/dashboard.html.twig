@@ -5,11 +5,13 @@
 {% block middle_body %}
     {% set latest_purchase = latest_credit_batches|first %}
 
-    <div class="middle-app" data-bs-theme="light" data-middle-theme>
+    <div class="middle-app" data-bs-theme="dark" data-middle-theme>
         <div class="page">
             <header class="navbar navbar-expand-md d-print-none middle-navbar">
                 <div class="container-xl">
-                    <a class="navbar-brand middle-navbar__brand" href="{{ path('front_home') }}">DressMe</a>
+                    <a class="navbar-brand middle-navbar__brand" href="{{ path('front_home') }}" aria-label="DressMe home">
+                        <img src="{{ asset('images/logo-light.png') }}" alt="DressMe">
+                    </a>
 
                     <div class="navbar-nav flex-row order-md-last align-items-center gap-2">
                         <div class="middle-theme-toggle" data-theme-toggle aria-label="Choose color theme">

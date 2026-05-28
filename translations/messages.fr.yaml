@@ -1,0 +1,228 @@
+meta:
+  brand: "DressMe"
+
+common:
+  close: "Fermer"
+  remove: "Supprimer"
+  total: "Total"
+  free: "Gratuit"
+  month: "mois"
+  months: "mois"
+
+form:
+  name: "Nom"
+  email: "Email"
+  website: "Site web"
+  password: "Mot de passe"
+  agree_terms: "J’accepte les conditions et la politique de confidentialité."
+  subject: "Sujet"
+  message: "Message"
+  work_email: "Email professionnel"
+  company: "Entreprise"
+  partnership_goal: "Objectif du partenariat"
+
+flash:
+  contact:
+    support_sent: "Votre demande de support a bien été envoyée."
+    partnership_sent: "Votre demande de partenariat a bien été envoyée."
+  auth:
+    account_exists: "Un compte existe déjà pour cet email ou ce site web."
+
+header:
+  logo_aria: "Accueil DressMe"
+  toggle_navigation: "Ouvrir la navigation"
+  main_navigation: "Navigation principale"
+  language_switch: "Choix de la langue"
+  open_cart: "Ouvrir le panier"
+  open_dashboard: "Ouvrir le tableau de bord"
+  login: "Connexion"
+  logout: "Déconnexion"
+  nav:
+    offers: "Offres"
+    features: "Fonctionnalités"
+    contact: "Contact"
+
+footer:
+  logo_aria: "Accueil DressMe"
+  navigation: "Navigation du pied de page"
+  socials: "Liens sociaux"
+  copyright: "2026 © Dress Me"
+  nav:
+    home: "Accueil"
+    offers: "Offres"
+    features: "Fonctionnalités"
+    contact: "Contact"
+
+cart:
+  drawer:
+    kicker: "Offres sélectionnées"
+    title: "Votre panier"
+    empty: "Votre panier est vide. Choisissez une offre pour commencer."
+    checkout: "Voir le panier et finaliser"
+  page:
+    title: "Panier"
+    eyebrow: "Panier"
+    heading: "Votre sélection d’offres se trouve dans le panier latéral et le checkout."
+    intro: "Utilisez le panier du header pour revoir instantanément votre sélection, puis passez au checkout quand elle est prête."
+    browse_offers: "Voir les offres"
+    go_to_checkout: "Aller au checkout"
+    quick_access:
+      title: "Accès rapide"
+      body: "Ouvrez le panier en haut à droite depuis n’importe quelle page front pour ajouter, retirer ou consulter vos offres sélectionnées."
+    ready_to_pay:
+      title: "Prêt à payer"
+      body: "La page checkout récapitule votre commande et prépare la prochaine étape de paiement lorsque votre panier est complet."
+
+checkout:
+  title: "Checkout"
+  eyebrow: "Checkout"
+  heading: "Vérifiez votre panier avant le paiement."
+  intro: "Vos offres DressMe sélectionnées sont listées ci-dessous. Le paiement Stripe sera branché à l’étape suivante."
+  back_to_offers: "Retour aux offres"
+  cart_items: "Articles du panier"
+  selected_offers: "Offres sélectionnées"
+  items_suffix: "article(s)"
+  empty: "Votre panier est vide. Ajoutez une offre avant de poursuivre vers le paiement."
+  table:
+    offer: "Offre"
+    unit_price: "Prix unitaire"
+    qty: "Qté"
+    subtotal: "Sous-total"
+    actions: "Actions"
+  summary:
+    kicker: "Récapitulatif"
+    title: "Résumé"
+    subtotal: "Sous-total"
+    payment_provider: "Prestataire de paiement"
+    place_order: "Passer commande"
+    note: "La redirection Stripe sera branchée ici plus tard. Pour le moment, ce bouton reste volontairement inactif."
+
+contact:
+  title: "Contact"
+  eyebrow: "Contacter DressMe"
+  heading: "Dites-nous ce dont vous avez besoin."
+  intro: "Choisissez le bon formulaire pour que votre message arrive au bon endroit. Les demandes de support et les opportunités business n’ont pas besoin du même contexte."
+  message_type: "Type de message"
+  help_heading: "Comment pouvons-nous vous aider ?"
+  form_type: "Type de formulaire de contact"
+  customer_support: "Support client"
+  business_partnership: "Partenariat business"
+  send_support_request: "Envoyer la demande de support"
+  send_partnership_request: "Envoyer la demande de partenariat"
+
+features:
+  title: "Fonctionnalités"
+  eyebrow: "Fonctionnalités DressMe"
+  heading: "Tout ce dont votre boutique a besoin pour lancer un essayage virtuel premium."
+  intro: "De l’intégration WooCommerce aux insights de conversion, DressMe s’intègre naturellement dans votre stack e-commerce."
+  cards:
+    integration:
+      title: "Intégration prête pour WooCommerce"
+      body: "Connectez votre catalogue, synchronisez les variantes produit et activez l’expérience sans reconstruire vos fiches produit."
+    tryon:
+      title: "Parcours d’essayage virtuel rapide"
+      body: "Offrez aux acheteurs une expérience fluide et rassurante qui réduit l’hésitation et les aide à se projeter avant le checkout."
+    credits:
+      title: "Gestion centralisée des crédits"
+      body: "Suivez l’usage, gérez les abonnements et gardez une vision claire du budget sur toutes vos campagnes et lancements."
+    analytics:
+      title: "Analyses orientées performance"
+      body: "Mesurez l’adoption, identifiez les produits gagnants et améliorez le parcours client avec des données concrètes."
+
+home:
+  title: "Accueil"
+  video:
+    placeholder_aria: "Emplacement de vidéo"
+  showcase:
+    eyebrow: "Essayage virtuel"
+    heading: "L’essayage nouvelle génération"
+    intro: "Notre plugin permet un essayage virtuel simple, rapide et plus vrai que nature. Un volume de génération qui s’adapte à vos besoins par abonnement ou par crédits."
+    primary_cta: "Faire le test"
+    secondary_cta: "L’installer sur mon site"
+    cards:
+      studio: "Essai studio"
+      lookbook: "Lookbook"
+      catalog: "Catalogue"
+      campaign: "Campagne"
+      drop: "Drop produit"
+      ecommerce: "E-commerce"
+  how:
+    eyebrow: "Expérience"
+    heading: "Comment ça marche"
+    intro: "Un parcours simple pour connecter votre boutique, lancer les essayages virtuels et piloter vos conversions depuis une interface claire."
+    cta: "Voir toutes les fonctionnalités"
+    steps:
+      configuration:
+        pill: "Configuration"
+        title: "Connectez votre boutique WooCommerce"
+        body: "Branchez DressMe en quelques minutes pour synchroniser vos produits, vos variantes et votre catalogue sans friction technique."
+        footer: "Connexion rapide via API"
+      tryon:
+        pill: "Essayage"
+        title: "Activez l’essayage virtuel sur vos fiches produit"
+        body: "Vos clients visualisent instantanément les pièces sur leurs photos, avec une expérience premium pensée pour rassurer avant l’achat."
+        footer: "Expérience immersive et fluide"
+      management:
+        pill: "Pilotage"
+        title: "Gérez vos crédits et votre compte en un seul endroit"
+        body: "Suivez votre consommation, ajustez vos offres et gardez le contrôle sur votre usage depuis un tableau de bord centralisé."
+        footer: "Suivi simple et transparent"
+      optimization:
+        pill: "Optimisation"
+        title: "Analysez les résultats pour améliorer la conversion"
+        body: "Identifiez les produits qui performent le mieux, optimisez vos visuels et affinez votre parcours pour maximiser l’impact commercial."
+        footer: "Décisions guidées par la donnée"
+  promises:
+    eyebrow: "Impact"
+    heading: "Nos promesses"
+    intro: "Une expérience pensée pour rassurer vos clients, accélérer la décision d’achat et améliorer la performance commerciale de votre boutique."
+    cards:
+      conversion:
+        title: "Augmentation de la conversion"
+        body: "Réduisez les hésitations au moment de l’achat en aidant vos visiteurs à mieux se projeter dans les produits."
+      returns:
+        title: "Réduction des retours produits"
+        body: "Donnez une vision plus réaliste du rendu final pour limiter les déceptions après livraison et sécuriser les commandes."
+      integration:
+        title: "Intégration simple et rapide"
+        body: "Connectez votre site en quelques minutes, sans refonte de parcours ni surcharge technique pour vos équipes."
+      premium:
+        title: "Expérience premium pour vos clients"
+        body: "Valorisez votre image de marque avec un essayage virtuel fluide, moderne et immédiatement compréhensible."
+
+login:
+  title: "Connexion"
+  eyebrow: "Heureux de vous revoir"
+  heading: "Se connecter"
+  intro: "Accédez à votre tableau de bord, vos crédits et les réglages du plugin DressMe."
+  submit: "Se connecter"
+  no_account: "Pas encore de compte ?"
+  create_one: "En créer un"
+
+offers:
+  title: "Offres"
+  eyebrow: "Tarifs DressMe"
+  heading: "Choisissez le plan de crédits adapté à votre boutique."
+  intro: "Les abonnements sont faits pour un usage récurrent de l’essayage virtuel. Les packs one-shot sont utiles quand vous avez besoin de crédits supplémentaires pour une campagne ou un lancement produit."
+  recurring_credits: "Crédits récurrents"
+  subscriptions: "Abonnements"
+  billing_period: "Période de facturation de l’abonnement"
+  monthly: "Mensuel"
+  annually: "Annuel"
+  annual_subscription: "Abonnement annuel"
+  subscription: "Abonnement"
+  add_to_cart: "Ajouter au panier"
+  no_subscription: "Aucune offre d’abonnement n’est disponible pour le moment."
+  flexible_packs: "Packs flexibles"
+  one_time_packs: "Packs de crédits one-shot"
+  one_time: "One-shot"
+  no_one_time: "Aucun pack one-shot n’est disponible pour le moment."
+
+register:
+  title: "Inscription"
+  eyebrow: "Commencez à construire"
+  heading: "Créer un compte"
+  intro: "Créez votre espace DressMe et connectez votre boutique WooCommerce plus tard."
+  submit: "Créer un compte"
+  already_registered: "Déjà inscrit ?"
+  log_in: "Se connecter"

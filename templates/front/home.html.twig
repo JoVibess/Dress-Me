@@ -1,10 +1,250 @@
 {% extends 'front/base.html.twig' %}
 
-{% block page_title %}Home{% endblock %}
+{% block page_title %}{{ 'home.title'|trans }}{% endblock %}
+
+{% block body_class %}home-page{% endblock %}
 
 {% block front_body %}
-    <section class="home-hero">
-        <h1>DressMe</h1>
-        <p>Virtual try-on for WooCommerce stores.</p>
+    <section class="home-showcase" data-home-showcase>
+        <div class="home-showcase__media" data-home-showcase-carousel aria-hidden="true">
+            <div class="home-showcase__carousel">
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-1.webp') }}"
+                            alt="{{ 'home.showcase.cards.studio'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-2.webp') }}"
+                            alt="{{ 'home.showcase.cards.lookbook'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-3.webp') }}"
+                            alt="{{ 'home.showcase.cards.catalog'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-4.webp') }}"
+                            alt="{{ 'home.showcase.cards.campaign'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-5.webp') }}"
+                            alt="{{ 'home.showcase.cards.drop'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+
+                <div class="home-showcase__carousel-item">
+                    <div class="home-showcase__carousel-box">
+                        <img
+                            class="home-showcase__carousel-image"
+                            src="{{ asset('images/dresseMe-hero-6.webp') }}"
+                            alt="{{ 'home.showcase.cards.ecommerce'|trans }}"
+                            loading="lazy"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-showcase__content">
+            <p class="eyebrow">{{ 'home.showcase.eyebrow'|trans }}</p>
+            <h1>{{ 'home.showcase.heading'|trans }}</h1>
+            <p class="home-showcase__intro">
+                {{ 'home.showcase.intro'|trans }}
+            </p>
+
+            <div class="home-showcase__actions">
+                <a class="btn btn-outline-dark rounded-pill px-4" href="{{ path('front_features') }}">{{ 'home.showcase.primary_cta'|trans }}</a>
+                <a class="btn btn-dark rounded-pill px-4" href="{{ path('front_contact') }}">{{ 'home.showcase.secondary_cta'|trans }}</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-video">
+        <div class="home-video__frame">
+            <iframe
+                src="https://www.youtube.com/embed/EZ_G9N5L0mg"
+                title="DressMe video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </section>
+
+    <section class="home-how-it-works">
+        <div class="home-how-it-works__header">
+            <div>
+                <p class="home-how-it-works__eyebrow">{{ 'home.how.eyebrow'|trans }}</p>
+                <h1>{{ 'home.how.heading'|trans }}</h1>
+                <p class="home-how-it-works__intro">
+                    {{ 'home.how.intro'|trans }}
+                </p>
+            </div>
+
+            <a class="home-how-it-works__cta" href="{{ path('front_features') }}">
+                {{ 'home.how.cta'|trans }}
+                <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="home-how-it-works__grid">
+            <article class="how-step-card">
+                <div class="how-step-card__topline">
+                    <span class="how-step-card__number">01</span>
+                    <span class="how-step-card__pill">{{ 'home.how.steps.configuration.pill'|trans }}</span>
+                </div>
+                <h2>{{ 'home.how.steps.configuration.title'|trans }}</h2>
+                <p>
+                    {{ 'home.how.steps.configuration.body'|trans }}
+                </p>
+                <div class="how-step-card__footer">
+                    <span class="how-step-card__accent"></span>
+                    <span>{{ 'home.how.steps.configuration.footer'|trans }}</span>
+                </div>
+            </article>
+
+            <article class="how-step-card">
+                <div class="how-step-card__topline">
+                    <span class="how-step-card__number">02</span>
+                    <span class="how-step-card__pill">{{ 'home.how.steps.tryon.pill'|trans }}</span>
+                </div>
+                <h2>{{ 'home.how.steps.tryon.title'|trans }}</h2>
+                <p>
+                    {{ 'home.how.steps.tryon.body'|trans }}
+                </p>
+                <div class="how-step-card__footer">
+                    <span class="how-step-card__accent"></span>
+                    <span>{{ 'home.how.steps.tryon.footer'|trans }}</span>
+                </div>
+            </article>
+
+            <article class="how-step-card">
+                <div class="how-step-card__topline">
+                    <span class="how-step-card__number">03</span>
+                    <span class="how-step-card__pill">{{ 'home.how.steps.management.pill'|trans }}</span>
+                </div>
+                <h2>{{ 'home.how.steps.management.title'|trans }}</h2>
+                <p>
+                    {{ 'home.how.steps.management.body'|trans }}
+                </p>
+                <div class="how-step-card__footer">
+                    <span class="how-step-card__accent"></span>
+                    <span>{{ 'home.how.steps.management.footer'|trans }}</span>
+                </div>
+            </article>
+
+            <article class="how-step-card">
+                <div class="how-step-card__topline">
+                    <span class="how-step-card__number">04</span>
+                    <span class="how-step-card__pill">{{ 'home.how.steps.optimization.pill'|trans }}</span>
+                </div>
+                <h2>{{ 'home.how.steps.optimization.title'|trans }}</h2>
+                <p>
+                    {{ 'home.how.steps.optimization.body'|trans }}
+                </p>
+                <div class="how-step-card__footer">
+                    <span class="how-step-card__accent"></span>
+                    <span>{{ 'home.how.steps.optimization.footer'|trans }}</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-promises">
+        <div class="home-promises__header">
+            <div>
+                <p class="home-promises__eyebrow">{{ 'home.promises.eyebrow'|trans }}</p>
+                <h1>{{ 'home.promises.heading'|trans }}</h1>
+                <p class="home-promises__intro">
+                    {{ 'home.promises.intro'|trans }}
+                </p>
+            </div>
+        </div>
+
+        <div class="home-promises__grid">
+            <article class="promise-card">
+                <div class="promise-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M5 16L10 11L13 14L19 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 8H19V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2>{{ 'home.promises.cards.conversion.title'|trans }}</h2>
+                <p>
+                    {{ 'home.promises.cards.conversion.body'|trans }}
+                </p>
+            </article>
+
+            <article class="promise-card">
+                <div class="promise-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M17 9C17 6.79086 14.7614 5 12 5C9.23858 5 7 6.79086 7 9C7 14 17 12 17 17C17 19.2091 14.7614 21 12 21C9.23858 21 7 19.2091 7 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2>{{ 'home.promises.cards.returns.title'|trans }}</h2>
+                <p>
+                    {{ 'home.promises.cards.returns.body'|trans }}
+                </p>
+            </article>
+
+            <article class="promise-card">
+                <div class="promise-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="4" y="5" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                        <path d="M8 10H16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <path d="M8 14H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2>{{ 'home.promises.cards.integration.title'|trans }}</h2>
+                <p>
+                    {{ 'home.promises.cards.integration.body'|trans }}
+                </p>
+            </article>
+
+            <article class="promise-card">
+                <div class="promise-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3.8L14.55 8.96L20.25 9.79L16.12 13.81L17.09 19.48L12 16.8L6.91 19.48L7.88 13.81L3.75 9.79L9.45 8.96L12 3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h2>{{ 'home.promises.cards.premium.title'|trans }}</h2>
+                <p>
+                    {{ 'home.promises.cards.premium.body'|trans }}
+                </p>
+            </article>
+        </div>
     </section>
 {% endblock %}

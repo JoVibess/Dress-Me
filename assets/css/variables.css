@@ -1,11 +1,49 @@
 :root {
-    --dressme-bg: #f8f5ef;
-    --dressme-ink: #16130f;
-    --dressme-muted: #413b33;
+    --dressme-font-sans: "Avenir Next", "Montserrat", "Segoe UI", sans-serif;
+    --dressme-font-display: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+
+    --dressme-bg: #1b1b1b;
+    --dressme-bg-elevated: #202020;
+    --dressme-surface: #262626;
+    --dressme-surface-strong: #2f2f2f;
+
+    --dressme-ink: #f8f4e8;
+    --dressme-ink-muted: rgba(248, 244, 232, 0.72);
+    --dressme-muted: #b7b1a3;
+
+    --dressme-accent: #f4d539;
+    --dressme-accent-strong: #ffe55c;
+
+    --dressme-border: rgba(244, 213, 57, 0.22);
+    --dressme-border-strong: rgba(244, 213, 57, 0.62);
+
+    --dressme-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+    --dressme-shadow-strong: 0 30px 72px rgba(0, 0, 0, 0.34);
+    --dressme-radius-lg: 24px;
+    --dressme-radius-xl: 32px;
+    --dressme-radius-pill: 999px;
 }
 
 body {
     margin: 0;
+    font-family: var(--dressme-font-sans);
     background: var(--dressme-bg);
     color: var(--dressme-ink);
+    background-image:
+        radial-gradient(circle at top left, rgba(244, 213, 57, 0.14), transparent 24%),
+        radial-gradient(circle at 82% 10%, rgba(244, 213, 57, 0.08), transparent 18%),
+        linear-gradient(180deg, #202020 0%, #1b1b1b 34%, #171717 100%);
+    background-attachment: fixed;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: inherit;
+}
+
+::selection {
+    color: #16130f;
+    background: var(--dressme-accent);
 }
