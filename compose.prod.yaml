@@ -52,6 +52,7 @@ services:
       MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
       CONTACT_TO_EMAIL: "ton-email@example.com"
       GOOGLE_AI_STUDIO_API_KEY: ${GOOGLE_AI_STUDIO_API_KEY}
+
 volumes:
   dressme-db-data:
   dressme-uploads-data:
