@@ -11,7 +11,7 @@ final class ApiTokenValidator
     {
     }
 
-    public function findValidStoreToken(string $apiKey, ?string $siteUrl = null): ?ApiToken
+    public function findActiveStoreToken(string $apiKey): ?ApiToken
     {
         $apiToken = $this->apiTokenRepository->findActiveByTokenValue($apiKey);
 
@@ -24,6 +24,19 @@ final class ApiTokenValidator
         if (null === $store || !$store->isActive()) {
             return null;
         }
+
+        return $apiToken;
+    }
+
+    public function findValidStoreToken(string $apiKey, ?string $siteUrl = null): ?ApiToken
+    {
+        $apiToken = $this->findActiveStoreToken($apiKey);
+
+        if (null === $apiToken) {
+            return null;
+        }
+
+        $store = $apiToken->getStore();
 
         if (null !== $siteUrl && !$this->matchesStoreWebsite($siteUrl, (string) $store->getWebsite())) {
             return null;

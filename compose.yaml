@@ -41,6 +41,7 @@ services:
     depends_on:
       - db
       - mailpit
+      - redis
     ports:
       - "80:80"
     volumes:
@@ -48,6 +49,8 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - ./:/var/www
       - ./tmp:/tmp
+    environment:
+      REDIS_URL: "redis://redis:6379"
     networks:
       - dev
 
@@ -57,11 +60,14 @@ services:
     depends_on:
       - db
       - mailpit
+      - redis
     command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
     restart: unless-stopped
     volumes:
       - ./:/var/www
       - ./tmp:/tmp
+    environment:
+      REDIS_URL: "redis://redis:6379"
     networks:
       - dev
 

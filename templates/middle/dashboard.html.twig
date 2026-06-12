@@ -109,8 +109,8 @@
                                 <div class="card h-100">
                                     <div class="card-header middle-card-header">
                                         <div>
-                                            <h2 class="card-title mb-1">Active API token</h2>
-                                            <div class="card-subtitle">Copy this token into the WordPress plugin to authenticate requests.</div>
+                                            <h2 class="card-title mb-1">Active API credentials</h2>
+                                            <div class="card-subtitle">Copy this key and secret into the WordPress plugin to authenticate signed requests.</div>
                                         </div>
                                         {% if active_token %}
                                             <span class="status status-green">Valid</span>
@@ -120,7 +120,12 @@
                                     <div class="card-body">
                                         {% if active_token %}
                                             <div class="middle-active-token">
+                                                <div class="small text-secondary text-uppercase mb-2">API key</div>
                                                 <code class="middle-token-value middle-token-value--large">{{ active_token.tokenValue }}</code>
+                                                {% if active_token.secretValue %}
+                                                    <div class="small text-secondary text-uppercase mt-4 mb-2">API secret</div>
+                                                    <code class="middle-token-value middle-token-value--large">{{ active_token.secretValue }}</code>
+                                                {% endif %}
                                                 <div class="text-secondary small mt-3">
                                                     Activated {{ active_token.activatedAt ? active_token.activatedAt|date('M d, Y') : active_token.createdAt|date('M d, Y') }}
                                                 </div>

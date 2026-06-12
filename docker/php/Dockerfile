@@ -25,7 +25,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
     && docker-php-ext-install \
             pdo pdo_mysql mysqli opcache intl zip calendar dom mbstring gd xsl soap \
 \
-    && pecl install apcu && docker-php-ext-enable apcu
+    && pecl install apcu redis && docker-php-ext-enable apcu redis
 
 RUN a2enmod rewrite
 

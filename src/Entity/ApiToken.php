@@ -20,6 +20,9 @@ class ApiToken
     #[ORM\Column(length: 255, unique: true)]
     private ?string $tokenValue = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $secretValue = null;
+
     #[ORM\Column]
     private ?bool $isActive = null;
 
@@ -60,6 +63,18 @@ class ApiToken
     public function setTokenValue(string $tokenValue): static
     {
         $this->tokenValue = $tokenValue;
+
+        return $this;
+    }
+
+    public function getSecretValue(): ?string
+    {
+        return $this->secretValue;
+    }
+
+    public function setSecretValue(?string $secretValue): static
+    {
+        $this->secretValue = $secretValue;
 
         return $this;
     }

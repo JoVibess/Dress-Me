@@ -293,6 +293,7 @@ final class AppFixtures extends Fixture
         $apiToken = (new ApiToken())
             ->setStore($store)
             ->setTokenValue(sprintf('dm_test_store_%02d_%s', $userIndex, substr(hash('xxh32', $store->getWebsite() ?? (string) $userIndex), 0, 12)))
+            ->setSecretValue(hash('sha256', sprintf('dm_secret_%02d_%s', $userIndex, $store->getWebsite() ?? (string) $userIndex)))
             ->setIsActive(true)
             ->setActivatedAt(new \DateTimeImmutable(sprintf('-%d days', 4 + ($userIndex % 40))));
 

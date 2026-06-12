@@ -9,12 +9,16 @@ services:
     volumes:
       - dressme-db-data:/var/lib/mysql
 
+  redis:
+    image: redis:7-alpine
+
   www:
     build:
       context: .
       dockerfile: docker/php/Dockerfile.prod
     depends_on:
       - db
+      - redis
     volumes:
       - dressme-uploads-data:/var/www/public/uploads
     environment:
@@ -24,6 +28,7 @@ services:
       DEFAULT_URI: "https://dressme.joeydecroix.com"
       TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
       TRUSTED_HOSTS: "^dressme\\.joeydecroix\\.com$"
+      REDIS_URL: "redis://redis:6379"
       MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
       MAILER_DSN: "null://null"
       MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"
@@ -36,6 +41,7 @@ services:
       dockerfile: docker/php/Dockerfile.prod
     depends_on:
       - db
+      - redis
     command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
     restart: unless-stopped
     volumes:
@@ -47,6 +53,7 @@ services:
       DEFAULT_URI: "https://dressme.joeydecroix.com"
       TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
       TRUSTED_HOSTS: "^dressme\\.joeydecroix\\.com$"
+      REDIS_URL: "redis://redis:6379"
       MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
       MAILER_DSN: "null://null"
       MAILER_FROM_EMAIL: "no-reply@dressme.joeydecroix.com"

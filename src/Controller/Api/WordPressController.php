@@ -5,8 +5,11 @@ namespace App\Controller\Api;
 use App\Dto\Api\WordPressTryOnStatusRequest;
 use App\Dto\Api\WordPressValidateKeyRequest;
 use App\Dto\Api\WordPressTryOnRequest;
+use App\Entity\ApiToken;
 use App\Message\ProcessTryOnRequestMessage;
 use App\Entity\TryOnRequest;
+use App\Security\ApiRequestAuthenticationException;
+use App\Security\ApiRequestSignatureValidator;
 use App\Service\ApiTokenValidator;
 use App\Service\CreditResolver;
 use App\Service\TryOnImageStorage;
@@ -28,6 +31,7 @@ final class WordPressController extends AbstractController
         Request $request,
         ValidatorInterface $validator,
         ApiTokenValidator $apiTokenValidator,
+        ApiRequestSignatureValidator $apiRequestSignatureValidator,
         CreditResolver $creditResolver,
     ): JsonResponse {
         $payload = json_decode($request->getContent(), true);
@@ -59,17 +63,16 @@ final class WordPressController extends AbstractController
             ], 400);
         }
 
-        $apiToken = $apiTokenValidator->findValidStoreToken(
+        $apiToken = $this->authenticateWordPressRequest(
+            $request,
             (string) $validateKeyRequest->apiKey,
             $validateKeyRequest->siteUrl,
+            $apiTokenValidator,
+            $apiRequestSignatureValidator,
         );
 
-        if (null === $apiToken) {
-            return $this->json([
-                'success' => false,
-                'error_code' => 'INVALID_API_KEY',
-                'message' => 'The provided API key is invalid for this store.',
-            ], 401);
+        if ($apiToken instanceof JsonResponse) {
+            return $apiToken;
         }
 
         $store = $apiToken->getStore();
@@ -97,6 +100,7 @@ final class WordPressController extends AbstractController
         Request $request,
         ValidatorInterface $validator,
         ApiTokenValidator $apiTokenValidator,
+        ApiRequestSignatureValidator $apiRequestSignatureValidator,
         CreditResolver $creditResolver,
         TryOnRequestFactory $tryOnRequestFactory,
         TryOnImageStorage $tryOnImageStorage,
@@ -131,17 +135,16 @@ final class WordPressController extends AbstractController
             ], 400);
         }
 
-        $apiToken = $apiTokenValidator->findValidStoreToken(
+        $apiToken = $this->authenticateWordPressRequest(
+            $request,
             (string) $tryOnPayload->apiKey,
             $tryOnPayload->siteUrl,
+            $apiTokenValidator,
+            $apiRequestSignatureValidator,
         );
 
-        if (null === $apiToken) {
-            return $this->json([
-                'success' => false,
-                'error_code' => 'INVALID_API_KEY',
-                'message' => 'The provided API key is invalid for this store.',
-            ], 401);
+        if ($apiToken instanceof JsonResponse) {
+            return $apiToken;
         }
 
         $store = $apiToken->getStore();
@@ -203,6 +206,7 @@ final class WordPressController extends AbstractController
         Request $request,
         ValidatorInterface $validator,
         ApiTokenValidator $apiTokenValidator,
+        ApiRequestSignatureValidator $apiRequestSignatureValidator,
         TryOnRequestRepository $tryOnRequestRepository,
     ): JsonResponse {
         $payload = json_decode($request->getContent(), true);
@@ -233,17 +237,16 @@ final class WordPressController extends AbstractController
             ], 400);
         }
 
-        $apiToken = $apiTokenValidator->findValidStoreToken(
+        $apiToken = $this->authenticateWordPressRequest(
+            $request,
             (string) $statusRequest->apiKey,
             $statusRequest->siteUrl,
+            $apiTokenValidator,
+            $apiRequestSignatureValidator,
         );
 
-        if (null === $apiToken || null === $apiToken->getStore()) {
-            return $this->json([
-                'success' => false,
-                'error_code' => 'INVALID_API_KEY',
-                'message' => 'The provided API key is invalid for this store.',
-            ], 401);
+        if ($apiToken instanceof JsonResponse) {
+            return $apiToken;
         }
 
         $tryOnRequest = $tryOnRequestRepository->findOneByJobIdAndStore(
@@ -276,5 +279,49 @@ final class WordPressController extends AbstractController
         }
 
         return sprintf('%s/%s', $request->getSchemeAndHttpHost(), ltrim($relativePath, '/'));
+    }
+
+    private function authenticateWordPressRequest(
+        Request $request,
+        string $apiKey,
+        ?string $siteUrl,
+        ApiTokenValidator $apiTokenValidator,
+        ApiRequestSignatureValidator $apiRequestSignatureValidator,
+    ): ApiToken|JsonResponse {
+        $usesSignedAuthentication = $apiRequestSignatureValidator->hasAuthenticationHeaders($request);
+
+        $apiToken = $usesSignedAuthentication
+            ? $apiTokenValidator->findActiveStoreToken($apiKey)
+            : $apiTokenValidator->findValidStoreToken($apiKey, $siteUrl);
+
+        if (null === $apiToken) {
+            return $this->json([
+                'success' => false,
+                'error_code' => 'INVALID_API_KEY',
+                'message' => 'The provided API key is invalid for this store.',
+            ], 401);
+        }
+
+        if ($usesSignedAuthentication) {
+            try {
+                $apiRequestSignatureValidator->assertValid($request, $apiToken);
+            } catch (ApiRequestAuthenticationException $exception) {
+                return $this->json([
+                    'success' => false,
+                    'error_code' => $exception->getErrorCode(),
+                    'message' => $exception->getMessage(),
+                ], $exception->getStatusCode());
+            }
+
+            if (null !== $siteUrl && null === $apiTokenValidator->findValidStoreToken($apiKey, $siteUrl)) {
+                return $this->json([
+                    'success' => false,
+                    'error_code' => 'INVALID_API_KEY',
+                    'message' => 'The provided API key is invalid for this store.',
+                ], 401);
+            }
+        }
+
+        return $apiToken;
     }
 }
