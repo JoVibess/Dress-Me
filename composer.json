@@ -81,6 +81,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
+        "test": "phpunit",
         "phpstan": "phpstan analyse -c phpstan.neon.dist --no-progress --debug",
         "cs-check": "php-cs-fixer fix --dry-run --diff --verbose --sequential",
         "cs-fix": "php-cs-fixer fix --verbose --sequential",

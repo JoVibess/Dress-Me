@@ -149,8 +149,6 @@ final readonly class GeminiTryOnGenerator
 
     /**
      * @param array<string, mixed> $payload
-     *
-     * @return string|null
      */
     private function extractGeneratedImageData(array $payload): ?string
     {

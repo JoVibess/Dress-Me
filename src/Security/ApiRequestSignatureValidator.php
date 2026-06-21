@@ -30,11 +30,7 @@ final readonly class ApiRequestSignatureValidator
         $secret = trim((string) $apiToken->getSecretValue());
 
         if ('' === $secret) {
-            throw new ApiRequestAuthenticationException(
-                'API_SECRET_NOT_CONFIGURED',
-                401,
-                'The API secret is not configured for this store.',
-            );
+            throw new ApiRequestAuthenticationException('API_SECRET_NOT_CONFIGURED', 401, 'The API secret is not configured for this store.');
         }
 
         $headerApiKey = trim((string) $request->headers->get(self::HEADER_API_KEY, ''));
@@ -43,54 +39,30 @@ final readonly class ApiRequestSignatureValidator
         $providedSignature = trim((string) $request->headers->get(self::HEADER_SIGNATURE, ''));
 
         if ('' === $headerApiKey || '' === $timestamp || '' === $nonce || '' === $providedSignature) {
-            throw new ApiRequestAuthenticationException(
-                'MISSING_AUTH_HEADERS',
-                401,
-                'Required authentication headers are missing.',
-            );
+            throw new ApiRequestAuthenticationException('MISSING_AUTH_HEADERS', 401, 'Required authentication headers are missing.');
         }
 
         if ($headerApiKey !== $apiToken->getTokenValue()) {
-            throw new ApiRequestAuthenticationException(
-                'INVALID_API_KEY',
-                401,
-                'The provided API key is invalid for this store.',
-            );
+            throw new ApiRequestAuthenticationException('INVALID_API_KEY', 401, 'The provided API key is invalid for this store.');
         }
 
         if (!ctype_digit($timestamp)) {
-            throw new ApiRequestAuthenticationException(
-                'INVALID_TIMESTAMP',
-                401,
-                'The request timestamp is invalid.',
-            );
+            throw new ApiRequestAuthenticationException('INVALID_TIMESTAMP', 401, 'The request timestamp is invalid.');
         }
 
         if (!preg_match('/^[a-zA-Z0-9_-]{16,255}$/', $nonce)) {
-            throw new ApiRequestAuthenticationException(
-                'INVALID_NONCE',
-                401,
-                'The request nonce is invalid.',
-            );
+            throw new ApiRequestAuthenticationException('INVALID_NONCE', 401, 'The request nonce is invalid.');
         }
 
         if (!preg_match('/^[a-f0-9]{64}$/i', $providedSignature)) {
-            throw new ApiRequestAuthenticationException(
-                'INVALID_SIGNATURE',
-                401,
-                'The request signature format is invalid.',
-            );
+            throw new ApiRequestAuthenticationException('INVALID_SIGNATURE', 401, 'The request signature format is invalid.');
         }
 
         $requestTimestamp = (int) $timestamp;
         $now = time();
 
         if (abs($now - $requestTimestamp) > $this->maxRequestAgeSeconds) {
-            throw new ApiRequestAuthenticationException(
-                'REQUEST_EXPIRED',
-                401,
-                'The request timestamp is outside the accepted window.',
-            );
+            throw new ApiRequestAuthenticationException('REQUEST_EXPIRED', 401, 'The request timestamp is outside the accepted window.');
         }
 
         $expectedSignature = hash_hmac('sha256', $this->buildStringToSign($request, $timestamp, $nonce), $secret);
@@ -114,11 +86,7 @@ final readonly class ApiRequestSignatureValidator
                 ),
                 FILE_APPEND,
             );
-            throw new ApiRequestAuthenticationException(
-                'INVALID_SIGNATURE',
-                401,
-                'The request signature is invalid.',
-            );
+            throw new ApiRequestAuthenticationException('INVALID_SIGNATURE', 401, 'The request signature is invalid.');
         }
 
         $this->guardAgainstNonceReplay($apiToken, $nonce);
@@ -158,11 +126,7 @@ final readonly class ApiRequestSignatureValidator
         });
 
         if (!$wasCreated) {
-            throw new ApiRequestAuthenticationException(
-                'NONCE_ALREADY_USED',
-                401,
-                'The request nonce has already been used.',
-            );
+            throw new ApiRequestAuthenticationException('NONCE_ALREADY_USED', 401, 'The request nonce has already been used.');
         }
     }
 }

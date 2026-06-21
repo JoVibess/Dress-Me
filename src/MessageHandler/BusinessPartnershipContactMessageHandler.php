@@ -5,8 +5,8 @@ namespace App\MessageHandler;
 use App\Message\BusinessPartnershipContactMessage;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Mime\Email;
 
 #[AsMessageHandler]
 final readonly class BusinessPartnershipContactMessageHandler

@@ -2,12 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Dto\Api\WordPressTryOnRequest;
 use App\Dto\Api\WordPressTryOnStatusRequest;
 use App\Dto\Api\WordPressValidateKeyRequest;
-use App\Dto\Api\WordPressTryOnRequest;
 use App\Entity\ApiToken;
-use App\Message\ProcessTryOnRequestMessage;
 use App\Entity\TryOnRequest;
+use App\Message\ProcessTryOnRequestMessage;
+use App\Repository\TryOnRequestRepository;
 use App\Security\ApiRequestAuthenticationException;
 use App\Security\ApiRequestSignatureValidator;
 use App\Service\ApiTokenValidator;
@@ -21,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use App\Repository\TryOnRequestRepository;
 
 #[Route('/api/wordpress', name: 'api_wordpress_')]
 final class WordPressController extends AbstractController
