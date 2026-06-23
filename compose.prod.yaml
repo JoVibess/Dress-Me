@@ -19,6 +19,8 @@ services:
     depends_on:
       - db
       - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - dressme-uploads-data:/var/www/public/uploads
     environment:
@@ -42,6 +44,8 @@ services:
     depends_on:
       - db
       - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
     restart: unless-stopped
     volumes:

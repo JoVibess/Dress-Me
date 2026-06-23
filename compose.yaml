@@ -42,6 +42,8 @@ services:
       - db
       - mailpit
       - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "80:80"
     volumes:
@@ -61,6 +63,8 @@ services:
       - db
       - mailpit
       - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=256M -vv
     restart: unless-stopped
     volumes:

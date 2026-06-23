@@ -16,6 +16,7 @@ use App\Service\CreditResolver;
 use App\Service\TryOnImageStorage;
 use App\Service\TryOnRequestFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/api/wordpress', name: 'api_wordpress_')]
 final class WordPressController extends AbstractController
 {
+    public function __construct(
+        #[Autowire('%env(DEFAULT_URI)%')]
+        private readonly string $defaultUri,
+    ) {
+    }
+
     #[Route('/validate-key', name: 'validate_key', methods: ['POST'])]
     public function validateKey(
         Request $request,
@@ -278,7 +285,37 @@ final class WordPressController extends AbstractController
             return null;
         }
 
-        return sprintf('%s/%s', $request->getSchemeAndHttpHost(), ltrim($relativePath, '/'));
+        $baseUri = $this->resolvePublicBaseUri($request);
+
+        return sprintf('%s/%s', rtrim($baseUri, '/'), ltrim($relativePath, '/'));
+    }
+
+    private function resolvePublicBaseUri(Request $request): string
+    {
+        $requestHost = strtolower($request->getHost());
+
+        if ($this->isInternalHost($requestHost)) {
+            return $this->defaultUri;
+        }
+
+        return $request->getSchemeAndHttpHost();
+    }
+
+    private function isInternalHost(string $host): bool
+    {
+        if ('' === $host) {
+            return true;
+        }
+
+        if (in_array($host, ['www', 'host.docker.internal', 'localhost'], true)) {
+            return true;
+        }
+
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            return true;
+        }
+
+        return !str_contains($host, '.');
     }
 
     private function authenticateWordPressRequest(
